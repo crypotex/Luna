@@ -7,7 +7,7 @@ public class IntroUI {
 	private String teamLeader = "Andre";
 	private String teamLeaderEmail = "b02166@ut.ee";
 	private String[] teamMembers = {"Annika Laumets", "Viktoria Plemakova",
-			"Henri Rästas"};
+			"Henri Rastas"}; //talle ei sobinud buildi ajal Henri nimes ä täht, nii et panin selle hetkel a'ks.
 	private String LogoUrl = "";
 	private String softwareVersion = "";
 	
