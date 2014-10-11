@@ -12,7 +12,7 @@
 		<property name="doc.dir" value="${build.dir}/doc"/>
 		<property name="test.reports.dir" value="${build.dir}/reports/"/>
 		
-	 	<property name="main-class"  value="ee.ut.math.tvt.Luna.Intro"/>
+	 	<property name="main.class"  value="ee.ut.math.tvt.Luna.Intro"/>
 	
 		<!-- Definitions of classpath variants used for different tasks -->
 
@@ -64,7 +64,7 @@
 					<include name="*.properties"/>
 				</fileset>
 				<manifest>
-					<attribute name="Main-Class" value="${main-class}"/>
+					<attribute name="Main-Class" value="${main.class}"/>
 				</manifest>	
 			</jar>
 		</target>
