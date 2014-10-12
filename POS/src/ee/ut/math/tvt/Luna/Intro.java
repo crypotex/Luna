@@ -25,8 +25,10 @@ public class Intro extends Application {
 			
 			LinkedHashMap<String,String> map = new LinkedHashMap<String,String>();
 			
-	        for (final String name: applicationProperties.stringPropertyNames())
-	            map.put(name, applicationProperties.getProperty(name));
+	        for (Object name: applicationProperties.keySet()) {
+	            map.put(name.toString(), applicationProperties.getProperty(name));
+	        }
+	        
 	       
 			
 			// Start with the boring graphic shit
