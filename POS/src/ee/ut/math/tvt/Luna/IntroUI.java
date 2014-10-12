@@ -3,7 +3,6 @@ package ee.ut.math.tvt.Luna;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Enumeration;
 
 /*
  * TODO: Add LogoUrl / logo and add softwareVersion
