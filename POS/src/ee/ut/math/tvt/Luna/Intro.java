@@ -2,8 +2,11 @@ package ee.ut.math.tvt.Luna;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+
 import javafx.application.Application;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,15 +45,15 @@ public class Intro extends Application {
 	        int counter = 0;
 	        for (String key: map.keySet()) {
 	        	if (key.equals("Logo_url")) {
-	        		Text keyOutput = new Text(key.replace('_', ' '));
-	            	keskmine.add(keyOutput, 0, counter);
 	        		Image img = new Image(map.get(key));
 	        		ImageView imgView = new ImageView(img);
 	                imgView.setFitWidth(300);
 	                imgView.setPreserveRatio(true);
 	                imgView.setSmooth(true);
 	                imgView.setCache(true);
-	        		keskmine.add(imgView, 1, counter);
+	        		keskmine.add(imgView, 0, counter, 2, 1);
+	        		keskmine.setAlignment(Pos.CENTER);
+	        		GridPane.setHalignment(imgView, HPos.CENTER); //paneb logo keskele
 	        		counter += 1;
 	        	} 
 	        	else {
