@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import javax.swing.*;
 
 /*
  * TODO: Add LogoUrl / logo and add softwareVersion
@@ -13,6 +14,17 @@ import java.util.Properties;
  */
 
 public class IntroUI {
+	
+	static void createAndShowGUI() {
+		JFrame frame = new JFrame("Luna");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JLabel label = new JLabel("Hello World"); // just for testing
+        frame.getContentPane().add(label);
+        
+		frame.setSize(500, 500);
+		frame.setVisible(true);
+	}
 	private Properties applicationProperties = new Properties();
 	private Properties versionProperties = new Properties();
 	
@@ -51,10 +63,10 @@ public class IntroUI {
 			FileInputStream input = new FileInputStream(propFileName);
 			prop.load(input);
 			FileOutputStream output = new FileOutputStream(propFileName);
-			prop.setProperty("build.revision.number", 
-					Integer.toString(Integer.parseInt(prop.getProperty("build.revision.number"))+1) );
-			prop.setProperty("build.number", ( prop.getProperty("build.major.number") + "." +
-					prop.getProperty("build.minor.number") + "." + prop.getProperty("build.revision.number") ));
+			//prop.setProperty("build.revision.number", 
+					//Integer.toString(Integer.parseInt(prop.getProperty("build.revision.number"))+1) );
+			//prop.setProperty("build.number", ( prop.getProperty("build.major.number") + "." +
+					//prop.getProperty("build.minor.number") + "." + prop.getProperty("build.revision.number") ));
 			prop.store(output, null);
 			input.close();
 			output.close();

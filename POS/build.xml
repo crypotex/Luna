@@ -3,7 +3,7 @@
 	
 	<!-- Definitions of variables used during the rest of this script -->
 
-		<property file="build.properties"/>
+		<property file="version.properties"/>
 		<property name="build.dir" value="${basedir}/build"/>
 		<property name="build.classes.dir" value="${build.dir}/classes"/>
 		<property name="src.dir" value="${basedir}/src"/>
@@ -57,8 +57,10 @@
 		</target>
 		
 		<!-- Create .jar file -->
-		<target name="dist" depends="build" description="Create .jar file">
+	
+		<target name="dist" depends="build, increase_revision" description="Create .jar file">
 			<mkdir dir="${build.jar.dir}"/>
+			
 			<jar destfile="${build.jar.dir}/Luna.jar" basedir="${build.classes.dir}">
 				<fileset dir="${basedir}">
 					<include name="*.properties"/>
@@ -69,12 +71,26 @@
 			</jar>
 		</target>
 	
+		<target name="increase_revision" description="Increases the revision/build number">
+			<propertyfile file="version.properties">
+				<entry key="build.revision.number" default="0" type="int" operation="+" />
+			</propertyfile>
+	
+			<property file="version.properties"/>
+			
+			<propertyfile file="version.properties">
+				<entry key="build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
+			</propertyfile>
+		</target>
+	
 		<!-- Run the built .jar file -->
-		<target name="jrun" depends="dist" description="Run the built .jar file">
+	
+		<target name="jrun" description="Run the built .jar file">
 			<java jar="${build.jar.dir}/Luna.jar" fork="true"/>
 		</target>
-
+	
 		<!-- Clean up build system results -->
+	
 		<target name="clean" description="Clean up build system results">
 			<delete dir="${build.dir}"/>
 		</target>
