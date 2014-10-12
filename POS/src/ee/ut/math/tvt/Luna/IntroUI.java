@@ -8,7 +8,11 @@ import java.io.IOException;
  * TODO: Add LogoUrl / logo and add softwareVersion
  */
 
+
 public class IntroUI {
+	
+	
+	
 	
 	private LinkedProperties applicationProperties = new LinkedProperties();
 	private LinkedProperties versionProperties = new LinkedProperties();
@@ -17,6 +21,7 @@ public class IntroUI {
 		this.applicationProperties = getApplicationPropertiesFromFile();
 		this.versionProperties = getVersionPropertiesFromFile();
 	}
+	
 	
 	public LinkedProperties getApplicationProperties() {
 		return applicationProperties;
@@ -59,6 +64,7 @@ public class IntroUI {
 		} catch (IOException e) {
 			throw new RuntimeException("Method : getVersionProperties has failed ! ");
 		}
-	}
 		
+	}
+	
 }
