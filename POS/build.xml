@@ -83,6 +83,10 @@
 			</propertyfile>
 		</target>
 	
+		<propertyfile file="application.properties">
+			<entry key="Software_version" value="${build.number}"/>
+		</propertyfile>
+	
 		<!-- Run the built .jar file -->
 	
 		<target name="jrun" description="Run the built .jar file">
