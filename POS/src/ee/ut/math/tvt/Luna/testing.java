@@ -3,25 +3,73 @@ package ee.ut.math.tvt.Luna;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Properties;
 
-public class testing {
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+public class testing extends Application{
 
 	public static void main(String[] args) throws IOException {
+		launch(args);
+	}
+
+	public void start(Stage primaryStage) {
+		// Deal with the properties to hashmap shit
+		IntroUI props = new IntroUI();
+		LinkedProperties applicationProperties = props.getApplicationProperties();
+		LinkedProperties versionProperties = props.getVersionProperties();
 		
-		IntroUI test = new IntroUI();
-		Properties testpropapp = test.getApplicationProperties();
-		for (String key : testpropapp.stringPropertyNames()) {
-			String value = testpropapp.getProperty(key);
-			System.out.println("The property in " + key + " is: " + value);
+		LinkedHashMap<String,String> map = new LinkedHashMap<String,String>();
+		
+        for (final String name: applicationProperties.stringPropertyNames())
+            map.put(name, applicationProperties.getProperty(name));
+       
+		
+		// Start with the boring graphic shit
+        BorderPane juur = new BorderPane();
+        
+        GridPane keskmine = new GridPane();
+        keskmine.setHgap(20);
+        keskmine.setVgap(10);
+        keskmine.setPadding(new Insets(0, 10, 0, 10));
+        
+        int counter = 0;
+        System.out.println(map);
+        for (String key: map.keySet()) {
+//        	if (key.equals("LogoUrl")) {
+//        		Do stuff
+//        	} else {
+//        		Text voti = new Text(key.replace('_', ' '));
+//            	Text v‰‰rtus = new Text(map.get(key));
+//            	keskmine.add(voti, 0, counter);
+//            	keskmine.add(v‰‰rtus, 1, counter);
+//            	counter += 1;
+//        	}
+        	
+        	//tˆˆtav kood
+        	Text voti = new Text(key.replace('_', ' '));
+        	Text v‰‰rtus = new Text(map.get(key));
+        	keskmine.add(voti, 0, counter);
+        	keskmine.add(v‰‰rtus, 1, counter);
+        	counter += 1;
 		}
-
-		Properties testpropver = test.getVersionProperties();
-		for (String key : testpropver.stringPropertyNames()) {
-			String value = testpropver.getProperty(key);
-			System.out.println("The property in " + key + " is: " + value);
-		}
-
+        juur.setCenter(keskmine);
+        
+        Scene appScene = new Scene(juur,500,500); 
+        primaryStage.setTitle("Luna Properties");
+        primaryStage.setScene(appScene);
+        primaryStage.show();
 	}
 
 }

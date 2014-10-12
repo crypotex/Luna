@@ -1,49 +1,34 @@
 package ee.ut.math.tvt.Luna;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import javax.swing.*;
+import java.util.Enumeration;
 
 /*
  * TODO: Add LogoUrl / logo and add softwareVersion
- * java util properties
  */
 
 public class IntroUI {
 	
-	static void createAndShowGUI() {
-		JFrame frame = new JFrame("Luna");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JLabel label = new JLabel("Hello World"); // just for testing
-        frame.getContentPane().add(label);
-        
-		frame.setSize(500, 500);
-		frame.setVisible(true);
-	}
-	private Properties applicationProperties = new Properties();
-	private Properties versionProperties = new Properties();
-	
+	private LinkedProperties applicationProperties = new LinkedProperties();
+	private LinkedProperties versionProperties = new LinkedProperties();
 	
 	public IntroUI() {
 		this.applicationProperties = getApplicationPropertiesFromFile();
 		this.versionProperties = getVersionPropertiesFromFile();
 	}
 	
-	public Properties getApplicationProperties() {
+	public LinkedProperties getApplicationProperties() {
 		return applicationProperties;
 	}
 
-	public Properties getVersionProperties() {
+	public LinkedProperties getVersionProperties() {
 		return versionProperties;
 	}
 
-	private Properties getApplicationPropertiesFromFile(){
-		Properties prop = new Properties();
+	private LinkedProperties getApplicationPropertiesFromFile(){
+		LinkedProperties prop = new LinkedProperties();
 		String propFileName = "application.properties";
 		try {
 			FileInputStream input = new FileInputStream(propFileName);
@@ -56,8 +41,8 @@ public class IntroUI {
 		}
 	}
 	
-	private Properties getVersionPropertiesFromFile(){
-		Properties prop = new Properties();
+	private LinkedProperties getVersionPropertiesFromFile(){
+		LinkedProperties prop = new LinkedProperties();
 		String propFileName = "version.properties";
 		try {
 			FileInputStream input = new FileInputStream(propFileName);
@@ -76,5 +61,5 @@ public class IntroUI {
 			throw new RuntimeException("Method : getVersionProperties has failed ! ");
 		}
 	}
-	
+		
 }
