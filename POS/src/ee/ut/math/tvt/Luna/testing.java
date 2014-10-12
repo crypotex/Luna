@@ -12,6 +12,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -47,22 +49,25 @@ public class testing extends Application{
         int counter = 0;
         System.out.println(map);
         for (String key: map.keySet()) {
-//        	if (key.equals("LogoUrl")) {
-//        		Do stuff
-//        	} else {
-//        		Text voti = new Text(key.replace('_', ' '));
-//            	Text v‰‰rtus = new Text(map.get(key));
-//            	keskmine.add(voti, 0, counter);
-//            	keskmine.add(v‰‰rtus, 1, counter);
-//            	counter += 1;
-//        	}
+        	if (key.equals("LogoUrl")) {
+        		Image pilt = new Image(map.get(key), 100, 0, false, false);
+        		ImageView iv1 = new ImageView();
+                iv1.setImage(pilt);
+        		keskmine.add(iv1, 1, counter);
+        	} else {
+        		Text voti = new Text(key.replace('_', ' '));
+            	Text v‰‰rtus = new Text(map.get(key));
+            	keskmine.add(voti, 0, counter);
+            	keskmine.add(v‰‰rtus, 1, counter);
+            	counter += 1;
+        	}
         	
         	//tˆˆtav kood
-        	Text voti = new Text(key.replace('_', ' '));
-        	Text v‰‰rtus = new Text(map.get(key));
-        	keskmine.add(voti, 0, counter);
-        	keskmine.add(v‰‰rtus, 1, counter);
-        	counter += 1;
+//        	Text voti = new Text(key.replace('_', ' '));
+//        	Text v‰‰rtus = new Text(map.get(key));
+//        	keskmine.add(voti, 0, counter);
+//        	keskmine.add(v‰‰rtus, 1, counter);
+//        	counter += 1;
 		}
         juur.setCenter(keskmine);
         
