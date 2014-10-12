@@ -14,8 +14,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 public class Intro extends Application {
+	
+	static Logger logger = Logger.getLogger(Intro.class);
+
 		public static void main(String[] args) throws IOException {
 			launch(args);
 		}
@@ -71,6 +76,8 @@ public class Intro extends Application {
 	        primaryStage.setTitle("Luna Properties");
 	        primaryStage.setScene(appScene);
 	        primaryStage.show();
+	        
+	        logger.info("Window is opened");
 		}
 
 }
