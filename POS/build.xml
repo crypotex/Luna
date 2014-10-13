@@ -10,7 +10,7 @@
 		<property name="build.jar.dir" value="${build.dir}/jar"/>
 		<property name="conf.dir" value="${basedir}/etc"/>
 		<property name="doc.dir" value="${build.dir}/doc"/>
-	 	<property name="lib.dir" value="lib"/>
+	 	<property name="lib.dir" value="${basedir}/lib"/>
 		<property name="test.reports.dir" value="${build.dir}/reports/"/>
 		
 	 	<property name="main.class"  value="ee.ut.math.tvt.Luna.Intro"/>
@@ -51,15 +51,29 @@
 	            target="1.8"
 	            source="1.8"
 				includeantruntime="false">
-				<classpath refid="compile.classpath"/>
+				<classpath refid="test.classpath"/>
 			</javac>
 
 		</target>
 		
 		<!-- Create .jar file -->
 	
-		<target name="dist" depends="build, increase_revision" description="Create .jar file">
+		<target name="dist" depends="build" description="Create .jar file">
 			<mkdir dir="${build.jar.dir}"/>
+			
+			<propertyfile file="version.properties">
+				<entry key="build.revision.number" default="0" type="int" operation="+" />
+			</propertyfile>
+				
+			<property file="version.properties"/>
+						
+			<propertyfile file="version.properties">
+				<entry key="build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
+			</propertyfile>
+			
+			<propertyfile file="application.properties">
+				<entry key="Software_version" value="${build.number}"/>
+			</propertyfile>
 			
 			<jar destfile="${build.jar.dir}/Luna.jar" basedir="${build.classes.dir}">
 				<fileset dir="${basedir}">
@@ -74,23 +88,7 @@
 				</manifest>	
 			</jar>
 		</target>
-	
-		<target name="increase_revision" description="Increases the revision/build number">
-			<propertyfile file="version.properties">
-				<entry key="build.revision.number" default="0" type="int" operation="+" />
-			</propertyfile>
-	
-			<property file="version.properties"/>
-			
-			<propertyfile file="version.properties">
-				<entry key="build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
-			</propertyfile>
-		</target>
-	
-		<propertyfile file="application.properties">
-			<entry key="Software_version" value="${build.number}"/>
-		</propertyfile>
-	
+
 		<!-- Run the built .jar file -->
 	
 		<target name="jrun" description="Run the built .jar file">
