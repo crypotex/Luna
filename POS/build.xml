@@ -26,7 +26,6 @@
 			<pathelement location="${build.classes.dir}"/>
 			<!-- configuration -->
 			<pathelement location="${conf.dir}"/>
-			<pathelement location="${conf.dir}"/>
 			<fileset dir="lib">
 				<include name="*.jar"/>
 			</fileset>
