@@ -10,6 +10,7 @@
 		<property name="build.jar.dir" value="${build.dir}/jar"/>
 		<property name="conf.dir" value="${basedir}/etc"/>
 		<property name="doc.dir" value="${build.dir}/doc"/>
+	 	<property name="lib.dir" value="lib"/>
 		<property name="test.reports.dir" value="${build.dir}/reports/"/>
 		
 	 	<property name="main.class"  value="ee.ut.math.tvt.Luna.Intro"/>
@@ -17,23 +18,22 @@
 		<!-- Definitions of classpath variants used for different tasks -->
 
 		<path id="compile.classpath">
-			<fileset dir="lib">
-				<include name="*.jar"/>
-			</fileset>
+			<fileset dir="${lib.dir}"
+				includes="**/*.jar"/>
 		</path>
 
 		<path id="test.classpath">
 			<pathelement location="${build.classes.dir}"/>
 			<!-- configuration -->
 			<pathelement location="${conf.dir}"/>
-			<fileset dir="lib">
+			<fileset dir="${lib.dir}">
 				<include name="*.jar"/>
 			</fileset>
 		</path>
 
 		<!-- Definitions of runnable ant targets.
 	         Run them from the command line by executing "ant [targetname]"  -->
-
+		
 		<target name="run" depends="build" description="Run the template application">
 			<java classname="${main.class}" classpathref="test.classpath" fork="yes" />
 		</target>
@@ -94,9 +94,14 @@
 		<!-- Run the built .jar file -->
 	
 		<target name="jrun" description="Run the built .jar file">
-			<java jar="${build.jar.dir}/Luna.jar" fork="true"/>
+			<java fork="true" classname="${main.class}">
+				<classpath>
+					<path refid="compile.classpath"/>
+					<path location="${build.jar.dir}/Luna.jar"/>
+			       </classpath>
+			  </java>
 		</target>
-	
+
 		<!-- Clean up build system results -->
 	
 		<target name="clean" description="Clean up build system results">

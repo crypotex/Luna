@@ -18,13 +18,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+import org.apache.log4j.BasicConfigurator;
 /*
  * TODO: Add LogoUrl / logo and add softwareVersion
  */
 
 
 public class IntroUI extends Application {
+	
 	private final Logger log = Logger.getLogger(Intro.class);
 	private LinkedProperties applicationProperties = new LinkedProperties();
 	private LinkedProperties versionProperties = new LinkedProperties();
@@ -134,6 +135,7 @@ public class IntroUI extends Application {
 		primaryStage.setTitle("Luna Properties");
 		primaryStage.setScene(appScene);
 		primaryStage.show();
+//		BasicConfigurator.configure();
 		log.info("Window opened!");
 	}	
 }
