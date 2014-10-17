@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.Luna;
 
+import java.awt.BorderLayout;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,28 +8,23 @@ import java.util.LinkedHashMap;
 
 import org.apache.log4j.Logger;
 
-import javafx.application.Application;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import javax.swing.*;
+
 import org.apache.log4j.BasicConfigurator;
 /*
  * TODO: Add LogoUrl / logo and add softwareVersion
  */
 
 
-public class IntroUI extends Application {
+
+import sun.management.jdp.JdpGenericPacket;
+
+
+public class IntroUI extends JFrame {
 	
-	private final Logger log = Logger.getLogger(Intro.class);
-	private LinkedProperties applicationProperties = new LinkedProperties();
-	private LinkedProperties versionProperties = new LinkedProperties();
+	private final static Logger log = Logger.getLogger(Intro.class);
+	private static LinkedProperties applicationProperties = new LinkedProperties();
+	private static LinkedProperties versionProperties = new LinkedProperties();
 
 	public IntroUI() {
 		this.applicationProperties = getApplicationPropertiesFromFile();
@@ -36,11 +32,11 @@ public class IntroUI extends Application {
 	}
 
 
-	public LinkedProperties getApplicationProperties() {
+	public static LinkedProperties getApplicationProperties() {
 		return applicationProperties;
 	}
 
-	public LinkedProperties getVersionProperties() {
+	public static LinkedProperties getVersionProperties() {
 		return versionProperties;
 	}
 
@@ -80,7 +76,7 @@ public class IntroUI extends Application {
 
 	}
 
-	public void start(Stage primaryStage) {
+	static void createandshowGUI() {
 
 		// Deal with the properties to hashmap shit
 		LinkedProperties applicationProperties = getApplicationProperties();
@@ -93,48 +89,36 @@ public class IntroUI extends Application {
 		}
 
 
-
 		// Start with the boring graphic shit
-		BorderPane juur = new BorderPane();
-
-		GridPane keskmine = new GridPane();
-		keskmine.setHgap(20);
-		keskmine.setVgap(10);
-		keskmine.setPadding(new Insets(0, 10, 0, 10));
-
-		int counter = 0;
+		JFrame frame = new JFrame("Luna Properties");
+		frame.getContentPane().add(new JLabel("Hello, world!"), BorderLayout.CENTER);
+		
 		for (String key: map.keySet()) {
 			if (key.equals("Logo_url")) {
 				try {
-					Image img = new Image(map.get(key));
-					ImageView imgView = new ImageView(img);
-					imgView.setFitWidth(300);
-					imgView.setPreserveRatio(true);
-					imgView.setSmooth(true);
-					imgView.setCache(true);
-					keskmine.add(imgView, 0, counter, 2, 1);
+					ImageIcon img = new ImageIcon(map.get(key));
+					JLabel imgView = new JLabel(img);
+					frame.getContentPane().add(imgView);
+					/*keskmine.add(imgView, 0, counter, 2, 1);
 					keskmine.setAlignment(Pos.CENTER);
-					GridPane.setHalignment(imgView, HPos.CENTER); //paneb logo keskele
-					counter += 1;
+					GridPane.setHalignment(imgView, HPos.CENTER); //paneb logo keskele*/
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 			} 
 			else {
-				Text keyOutput = new Text(key.replace('_', ' '));
-				Text keyValue = new Text(map.get(key));
-				keskmine.add(keyOutput, 0, counter);
-				keskmine.add(keyValue, 1, counter);
-				counter += 1;
+				JLabel keyOutput = new JLabel(key.replace('_', ' '));
+				JLabel keyValue = new JLabel(map.get(key));
+				frame.getContentPane().add(keyOutput);
+				frame.getContentPane().add(keyValue);
 			}
 		}
 
-		juur.setCenter(keskmine);
-
-		Scene appScene = new Scene(juur,500,500); 
-		primaryStage.setTitle("Luna Properties");
-		primaryStage.setScene(appScene);
-		primaryStage.show();
+		//juur.set(keskmine);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane();
+		frame.setSize(500, 500);
+		frame.setVisible(true);
 //		BasicConfigurator.configure();
 		log.info("Window opened!");
 	}	
