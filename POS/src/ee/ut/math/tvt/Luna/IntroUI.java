@@ -1,13 +1,20 @@
 package ee.ut.math.tvt.Luna;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.LinkedHashMap;
 
 import org.apache.log4j.Logger;
 
+import javafx.scene.layout.ColumnConstraints;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import org.apache.log4j.BasicConfigurator;
@@ -16,6 +23,16 @@ import org.apache.log4j.BasicConfigurator;
  */
 
 
+
+
+
+
+
+
+
+
+
+import com.sun.prism.Image;
 
 import sun.management.jdp.JdpGenericPacket;
 
@@ -84,24 +101,39 @@ public class IntroUI extends JFrame {
 
 		LinkedHashMap<String,String> map = new LinkedHashMap<String,String>();
 
-		for (Object name: applicationProperties.keySet()) {
-			map.put(name.toString(), applicationProperties.getProperty(name));
-		}
+//		for (Object name: applicationProperties.keySet()) {
+//			map.put(name.toString(), applicationProperties.getProperty(name));
+//		}
 
+		map.put("Team_name", "Luna");
+		map.put("Team_leader", "Andre");
+		map.put("Team_leader_email", "b02166@ut.ee");
+		map.put("Team_members", "Andre T\u00e4ttar, Annika Laumets, Viktoria Plemakova, Henri R\u00e4stas");
+		map.put("Software_version", "0.0.54");
+		map.put("Logo_url", "http://www.upload.ee/image/4305361/LunaLogo.jpg");
+		
+		System.out.println(map);
 
 		// Start with the boring graphic shit
 		JFrame frame = new JFrame("Luna Properties");
-		frame.getContentPane().add(new JLabel("Hello, world!"), BorderLayout.CENTER);
+		GridBagLayout gridpane = new GridBagLayout(); //teeb niimoodi, et me saaksime key'd panna ühte veergu ja value'd teisse
+		GridBagConstraints c = new GridBagConstraints();
+		frame.setLayout(gridpane);
+		c.ipadx = 10;
+		c.ipady = 10;
 		
+		int counter = 0;
 		for (String key: map.keySet()) {
 			if (key.equals("Logo_url")) {
 				try {
-					ImageIcon img = new ImageIcon(map.get(key));
-					JLabel imgView = new JLabel(img);
-					frame.getContentPane().add(imgView);
-					/*keskmine.add(imgView, 0, counter, 2, 1);
-					keskmine.setAlignment(Pos.CENTER);
-					GridPane.setHalignment(imgView, HPos.CENTER); //paneb logo keskele*/
+					URL url = new URL(map.get(key));
+					BufferedImage image = ImageIO.read(url); //loeb pildi URL'ist sisse
+					JLabel imgView = new JLabel(new ImageIcon(image));
+					c.gridx = 0;
+					c.gridy = counter;
+					c.gridwidth = 2;					
+					frame.getContentPane().add(imgView, c);
+					counter += 1;
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
@@ -109,15 +141,18 @@ public class IntroUI extends JFrame {
 			else {
 				JLabel keyOutput = new JLabel(key.replace('_', ' '));
 				JLabel keyValue = new JLabel(map.get(key));
-				frame.getContentPane().add(keyOutput);
-				frame.getContentPane().add(keyValue);
+				c.gridx = 0;
+				c.gridy = counter;
+				frame.getContentPane().add(keyOutput, c);
+				c.gridx = 1;
+				frame.getContentPane().add(keyValue, c);
+				counter += 1;
 			}
 		}
 
-		//juur.set(keskmine);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane();
-		frame.setSize(500, 500);
+		frame.setSize(600, 500);
 		frame.setVisible(true);
 //		BasicConfigurator.configure();
 		log.info("Window opened!");
