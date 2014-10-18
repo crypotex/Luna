@@ -88,6 +88,49 @@
 				</manifest>	
 			</jar>
 		</target>
+	
+		<target name="git_commit" description="Commit changes to Github">
+			<input message="Commit message" addproperty="commit.message"/>
+			
+			<exec executable="git">
+				<arg value="add"/>
+				<arg value="-A"/>
+			</exec>
+			
+			<exec executable="git">
+				<arg value="commit"/>
+				<arg value="-m ${commit.message}"/>
+			</exec>
+			
+			<input message="Username:" addproperty="user"/>
+			<input message="Password:" addproperty="pass"/>
+			
+			<exec executable="git">
+				<arg value="push"/>
+				<arg value="https://${user}:${pass}@github.com/crypotex/Luna.git"/>
+			</exec>
+		</target>
+	
+		<target name="git_tag" description="Adds a tag">
+			<input message="Tag name:" addproperty="tag.name"/>
+			<input message="Tag comment:" addproperty="tag.comment"/>
+			<input message="Username:" addproperty="user"/>
+			<input message="Password:" addproperty="pass"/>
+			
+			<exec executable="git">
+				<arg value="tag"/>
+				<arg value="-a"/>
+				<arg value="${tag.name}"/>
+				<arg value="-m"/>
+				<arg value="${tag.comment}"/>
+			</exec>
+			
+			<exec executable="git">
+				<arg value="push"/>
+				<arg value="https://${user}:${pass}@github.com/crypotex/Luna.git"/>
+				<arg value="--tags"/>
+			</exec>
+		</target>
 
 		<!-- Run the built .jar file -->
 	

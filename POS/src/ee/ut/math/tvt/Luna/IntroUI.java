@@ -116,7 +116,7 @@ public class IntroUI extends JFrame {
 
 		// Start with the boring graphic shit
 		JFrame frame = new JFrame("Luna Properties");
-		GridBagLayout gridpane = new GridBagLayout(); //teeb niimoodi, et me saaksime key'd panna ühte veergu ja value'd teisse
+		GridBagLayout gridpane = new GridBagLayout(); //teeb niimoodi, et me saaksime key'd panna yhte veergu ja value'd teisse
 		GridBagConstraints c = new GridBagConstraints();
 		frame.setLayout(gridpane);
 		c.ipadx = 10;
