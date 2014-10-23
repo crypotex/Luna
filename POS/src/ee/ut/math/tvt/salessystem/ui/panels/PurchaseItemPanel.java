@@ -1,6 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -9,9 +10,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
+import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -24,6 +27,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -32,7 +37,7 @@ import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
 /**
  * Purchase pane + shopping cart tabel UI.
  */
-public class PurchaseItemPanel extends JPanel {
+public class PurchaseItemPanel extends JPanel implements ComboBoxEditor {
 
 	private static final long serialVersionUID = 1L;
 
@@ -93,19 +98,31 @@ public class PurchaseItemPanel extends JPanel {
 		// Initialize the textfields
 		barCodeField = new JTextField();
 		quantityField = new JTextField("1");
-		nameField = new JComboBox<>();
+		nameField = new JComboBox<String>();
+		JTextField tf = new JTextField();
+		nameField.getEditor().setItem(tf);
+
+		ArrayList<String> objects = new ArrayList<String>();
+
 		//loeme jarjest lao andmeid ja lisame need comboboxi
 		for (int i = 0; i < model.getWarehouseTableModel().getRowCount(); i++) {
-			nameField.addItem(model.getWarehouseTableModel().getValueAt(i, 1).toString());
+			objects.add(model.getWarehouseTableModel().getValueAt(i, 1).toString());
 		}
-		nameField.setEditable(false);
+		String[] elements = objects.toArray(new String[objects.size()]);
+		
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				AutoCompleteSupport.install(nameField, GlazedLists.eventListOf(elements));
+			}
+		});
+	
 		priceField = new JTextField();
 
 
 		// Fill the dialog fields if the bar code text field loses focus
 		nameField.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
-
+				
 			}
 
 			public void focusLost(FocusEvent e) {
@@ -219,14 +236,14 @@ public class PurchaseItemPanel extends JPanel {
 				warning_window.setVisible(true);
 			}
 			else {
-				//vahendatakse kogust, aga kui ost tühistatakse, siis pannakse esialgne kogus tagasi
+				//vahendatakse kogust, aga kui ost tyhistatakse, siis pannakse esialgne kogus tagasi
 				model.getCurrentPurchaseTableModel()
 				.addItem(new SoldItem(stockItem, quantity));
 				if (false) {
 					stockItem.setQuantity(stockItem.getQuantity());
 				}
 				else { 
-						stockItem.setQuantity(stockItem.getQuantity() - quantity);
+					stockItem.setQuantity(stockItem.getQuantity() - quantity);
 				}
 			}
 		}
@@ -299,6 +316,42 @@ public class PurchaseItemPanel extends JPanel {
 		gc.weighty = 1.0;
 
 		return gc;
+	}
+
+	@Override
+	public Component getEditorComponent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setItem(Object anObject) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Object getItem() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void selectAll() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addActionListener(ActionListener l) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void removeActionListener(ActionListener l) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
