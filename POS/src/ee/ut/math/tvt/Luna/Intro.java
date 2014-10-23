@@ -1,6 +1,7 @@
 package ee.ut.math.tvt.Luna;
 
 import java.io.IOException;
+import javax.swing.JFrame;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
@@ -22,7 +23,7 @@ public class Intro extends IntroUI {
 		} else {
 
 			IntroUI introUI = new IntroUI();
-			introUI.setVisible(true); //kui see pole valja kommenteeritud, siis tekib kaks introui akent, sest meie IntroUI klassis on maaratud, et ta naitaks akent
+			introUI.setVisible(true); 
 			introUI.setAlwaysOnTop(true);
 
 			final SalesSystemUI ui = new SalesSystemUI(domainController);

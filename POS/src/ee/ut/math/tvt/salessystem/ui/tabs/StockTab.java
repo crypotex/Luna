@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -22,8 +23,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.JTableHeader;
-
-import com.sun.org.apache.bcel.internal.classfile.Method;
 
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -118,12 +117,12 @@ public class StockTab {
 
 	//displays new window where you can enter new item details and adds items to stock
 	private void addItemWindow() {
-		JDialog adding_window = new JDialog(new JFrame(), "Adding a new item to stock");
+		JDialog addingWindow = new JDialog(new JFrame(), "Adding a new item to stock");
 		GridBagLayout gb2 = new GridBagLayout();
 		GridBagConstraints gc2 = new GridBagConstraints();
 		gc2.ipadx = 10;
 		gc2.ipady = 10;
-		adding_window.setLayout(gb2);
+		addingWindow.setLayout(gb2);
 
 
 		//lisame valjad id, nime, koguse ja hinna jaoks
@@ -141,9 +140,9 @@ public class StockTab {
 		for (int i = 0; i < labels.size(); i++) {
 			gc2.gridx = 0;
 			gc2.gridy = counter;
-			adding_window.add(new JLabel(labels.get(i)), gc2);
+			addingWindow.add(new JLabel(labels.get(i)), gc2);
 			gc2.gridx = 1;
-			adding_window.add(textfields.get(i), gc2);
+			addingWindow.add(textfields.get(i), gc2);
 			counter += 1;
 		}
 
@@ -153,19 +152,29 @@ public class StockTab {
 		addItemButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					long input_id = Long.parseLong(id.getText());
-					int input_quantity = Integer.parseInt(quantity.getText());
-					String input_name = name.getText();
-					double input_price = Double.parseDouble(price.getText());
+					long inputId = Long.parseLong(id.getText());
+					int inputQuantity = Integer.parseInt(quantity.getText());
+					String inputName = name.getText();
+					double inputPrice = Double.parseDouble(price.getText());
 
-					StockItem new_item = new StockItem(input_id, input_name, "", input_price, input_quantity);
-					System.out.println(new_item);
-
-
-					System.out.println("input_id: " + input_id);
-					System.out.println("amount: " + input_quantity);
-					System.out.println("name: " + input_name);
-					System.out.println("price: " + input_price);
+					StockItem newItem = new StockItem(inputId, inputName, "", inputPrice, inputQuantity);
+					
+					try {
+						Method m = StockTableModel.class.getDeclaredMethod("addItem", StockItem.class);
+						m.invoke(model.getWarehouseTableModel(), newItem);
+					} catch (NoSuchMethodException e2) {
+						e2.printStackTrace();
+					} catch (SecurityException e2) {
+						e2.printStackTrace();
+					} catch (IllegalAccessException e2) {
+						e2.printStackTrace();
+					} catch (IllegalArgumentException e2) {
+						e2.printStackTrace();
+					} catch (InvocationTargetException e2) {
+						e2.printStackTrace();
+					}
+					
+					addingWindow.setVisible(false);
 
 				} catch (NumberFormatException e2) {
 					JDialog wrongFormatWindow = new JDialog(new JFrame(), "Wrong format!");
@@ -185,11 +194,11 @@ public class StockTab {
 		gc2.gridx = 0;
 		gc2.gridy = 4;
 		gc2.gridwidth = 2;	
-		adding_window.add(addItemButton, gc2);
+		addingWindow.add(addItemButton, gc2);
 
-		adding_window.setMinimumSize(new Dimension(200, 200));
-		adding_window.setLocation(550, 300);
-		adding_window.setVisible(true);
+		addingWindow.setMinimumSize(new Dimension(200, 200));
+		addingWindow.setLocation(550, 300);
+		addingWindow.setVisible(true);
 	}
 
 }

@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 
 public class IntroUI extends JFrame {
+	JFrame frame; 
 	
 	protected final static Logger log = Logger.getLogger(Intro.class);
 	private static LinkedProperties applicationProperties = new LinkedProperties();
@@ -38,10 +39,11 @@ public class IntroUI extends JFrame {
 		}
 
 		// Start with the boring graphic shit
-		JFrame frame = new JFrame("Luna Properties");
+		
 		GridBagLayout gridpane = new GridBagLayout(); //teeb niimoodi, et me saaksime key'd panna yhte veergu ja value'd teisse
 		GridBagConstraints c = new GridBagConstraints();
-		frame.setLayout(gridpane);
+		setLayout(gridpane);
+		setName("Luna Properties");
 		c.ipadx = 10;
 		c.ipady = 10;
 		
@@ -55,7 +57,7 @@ public class IntroUI extends JFrame {
 					c.gridx = 0;
 					c.gridy = counter;
 					c.gridwidth = 2;					
-					frame.getContentPane().add(imgView, c);
+					add(imgView, c);
 					counter += 1;
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
@@ -66,17 +68,15 @@ public class IntroUI extends JFrame {
 				JLabel keyValue = new JLabel(map.get(key));
 				c.gridx = 0;
 				c.gridy = counter;
-				frame.getContentPane().add(keyOutput, c);
+				add(keyOutput, c);
 				c.gridx = 1;
-				frame.getContentPane().add(keyValue, c);
+				add(keyValue, c);
 				counter += 1;
 			}
 		}
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane();
-		frame.setSize(600, 500);
-		frame.setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(600, 500);
 //		BasicConfigurator.configure();
 		log.info("Window opened!");
 	}	
