@@ -111,10 +111,6 @@ public class IntroUI extends JFrame {
 			FileInputStream input = new FileInputStream(propFileName);
 			prop.load(input);
 			FileOutputStream output = new FileOutputStream(propFileName);
-			//prop.setProperty("build.revision.number", 
-			//Integer.toString(Integer.parseInt(prop.getProperty("build.revision.number"))+1) );
-			//prop.setProperty("build.number", ( prop.getProperty("build.major.number") + "." +
-			//prop.getProperty("build.minor.number") + "." + prop.getProperty("build.revision.number") ));
 			prop.store(output, null);
 			input.close();
 			output.close();
