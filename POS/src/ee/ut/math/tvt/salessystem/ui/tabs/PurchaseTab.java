@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -184,11 +185,16 @@ public class PurchaseTab {
 			for (SoldItem item : model.getCurrentPurchaseTableModel().getTableRows()){
 				toPay += item.getSum();
 			}
-			JDialog confirmPage = new JDialog(new JFrame(), "Confirm page!");
-			JLabel amountToPayString = new JLabel("Amount to pay: " + toPay);
+
+			final double paySum = toPay;
+			JDialog confirmDialog = new JDialog(new JFrame(), "Confirm page!");
+			JLabel amountToPayString = new JLabel("Amount to pay: ");
+			JTextField fieldAmountToPay = new JTextField(Double.toString(paySum));
+			fieldAmountToPay.setEditable(false);
 			JLabel amountPaid = new JLabel("Amount of money received: ");
 			JLabel amountOfChange = new JLabel("Amount of change: ");
 			JTextField fieldAmountOfChange = new JTextField("0");
+			fieldAmountOfChange.setEnabled(false);
 			JTextField fieldAmountPaid = new JTextField();
 			System.out.println("Meetodis purchaseButtonClicked");
 			fieldAmountPaid.addActionListener(new ActionListener() {
@@ -199,19 +205,18 @@ public class PurchaseTab {
 					 * Checks if amount paid is is correctly formated and not negative.
 					 * @author - Andre. 
 					 */
-					if (Double.parseDouble(fieldAmountPaid.getText())< 0 ||
-							isNumeric(fieldAmountPaid.getText())){
+					if (Double.parseDouble(fieldAmountPaid.getText())< 0){
 						JOptionPane.showMessageDialog(null,
-								"Error: Please try to input a correct number",
+								"Error: Negative amount of payment received",
 								"Error Message",JOptionPane.ERROR_MESSAGE);
 					} else {
-						fieldAmountOfChange.setText(fieldAmountPaid.getText());
+						double change = Double.parseDouble(fieldAmountPaid.getText()) - paySum;
+						fieldAmountOfChange.setText(Double.toString(change));
 					}
 				}
 			});
 			JButton acceptPurchaseButton = new JButton("Accept Purchase");
 			JButton declinePurchaseButton = new JButton("Decline Purchase");
-			final double paySum = toPay;
 			acceptPurchaseButton.addActionListener(new ActionListener() {
 				/**
 				 * @author - Andre
@@ -229,6 +234,7 @@ public class PurchaseTab {
 						model.getHistoryItemsModel().acceptedPurchase(it);
 						endSale();
 						model.getCurrentPurchaseTableModel().clear();
+						confirmDialog.setVisible(false);
 					}
 				}
 			});
@@ -245,11 +251,62 @@ public class PurchaseTab {
 					}
 					endSale();
 					model.getCurrentPurchaseTableModel().clear();
+					confirmDialog.setVisible(false);
 					
 				}
 			});
-			
-			
+			/**
+			 * @author - Andre.
+			 * Graphics stuff now...
+			 */
+			confirmDialog.setSize(200,300);
+			GridBagLayout gb = new GridBagLayout();
+			GridBagConstraints gc = new GridBagConstraints();
+			confirmDialog.setLayout(gb);
+
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.weightx = 0.5;
+			gc.gridx = 0;
+			gc.gridy = 0;
+			confirmDialog.add(amountToPayString,gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.weightx = 0.5;
+			gc.gridx = 1;
+			gc.gridy = 0;
+			confirmDialog.add(fieldAmountToPay,gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.weightx = 0.5;
+			gc.gridx = 0;
+			gc.gridy = 1;
+			confirmDialog.add(amountPaid,gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.weightx = 0.5;
+			gc.gridx = 1;
+			gc.gridy = 1;
+			confirmDialog.add(fieldAmountPaid,gc);
+			gc.weightx = 0.5;
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridy = 2;
+			gc.gridx = 0;
+			confirmDialog.add(amountOfChange,gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridx = 1;
+			gc.gridy = 2;
+			gc.weightx = 0.5;
+			confirmDialog.add(fieldAmountOfChange,gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.weightx = 0.5;
+			gc.gridy = 3;
+			gc.gridx= 0;
+			confirmDialog.add(acceptPurchaseButton,gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridx = 1;
+			gc.weightx = 0.5;
+			gc.gridy = 3;
+			confirmDialog.add(declinePurchaseButton,gc);
+
+			confirmDialog.setAlwaysOnTop(true);
+			confirmDialog.setVisible(true);
 			
 			
 			
@@ -261,6 +318,9 @@ public class PurchaseTab {
 		}
 	}
 
+	
+	
+	
 	/* === Helper methods that bring the whole purchase-tab to a certain state
 	 *     when called.
 	 */
