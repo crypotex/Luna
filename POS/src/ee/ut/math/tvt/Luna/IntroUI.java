@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 
 public class IntroUI extends JFrame {
+	
 	JFrame frame; 
 	
 	protected final static Logger log = Logger.getLogger(Intro.class);

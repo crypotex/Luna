@@ -1,7 +1,6 @@
 package ee.ut.math.tvt.Luna;
 
 import java.io.IOException;
-import javax.swing.JFrame;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;

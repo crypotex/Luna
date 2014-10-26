@@ -6,13 +6,18 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 /**
@@ -45,7 +50,7 @@ public class HistoryTab {
         gc.weighty = 0.5;
         
         // Draws the historytable, which has a mouselistener for showing purchaseTable
-        panel.add(drawHistoryMainTable(),gc);
+        panel.add(drawHistoryMainTable(), gc);
         
         return panel;
     }
@@ -67,7 +72,28 @@ public class HistoryTab {
 			public void mouseEntered(MouseEvent e) { }
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Helloo, do something else here");
+				//author: Annika
+				JDialog oldPurchaseWindow = new JDialog(new JFrame(), "History of order");
+				PurchaseInfoTableModel pitm = new PurchaseInfoTableModel();
+				JTable soldItemsTable = new JTable(pitm);
+				JScrollPane scrollpane = new JScrollPane(soldItemsTable);
+				
+				//gets the history itmes by row number
+				int rowNumber = historyTable.rowAtPoint(e.getPoint());
+				List<SoldItem> soldItems = model.getHistoryItemsModel().getHistoryItemByRowIndex(rowNumber).getPurchaseItemList();
+				
+				for (int i = 0; i < soldItems.size(); i++) {
+					pitm.addItem(soldItems.get(i));
+				}
+				
+				soldItemsTable.setPreferredScrollableViewportSize(soldItemsTable.getPreferredSize());
+				
+				oldPurchaseWindow.add(scrollpane);
+				oldPurchaseWindow.pack();
+				oldPurchaseWindow.setAlwaysOnTop(true);
+				oldPurchaseWindow.setLocation(550, 300);
+				oldPurchaseWindow.setVisible(true);
+				
 			}
 		});
     	JTableHeader header = historyTable.getTableHeader();

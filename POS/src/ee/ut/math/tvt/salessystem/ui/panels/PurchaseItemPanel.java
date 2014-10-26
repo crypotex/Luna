@@ -7,9 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -32,7 +29,6 @@ import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -120,15 +116,13 @@ public class PurchaseItemPanel extends JPanel implements ComboBoxEditor {
 
 
 		// Fill the dialog fields if the bar code text field loses focus
-		nameField.addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent e) {
+		nameField.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fillDialogFields();
 				
 			}
-
-			public void focusLost(FocusEvent e) {
-				fillDialogFields();
-			}
-
 		});
 
 
@@ -239,13 +233,8 @@ public class PurchaseItemPanel extends JPanel implements ComboBoxEditor {
 				//vahendatakse kogust, aga kui ost tyhistatakse, siis pannakse esialgne kogus tagasi
 				model.getCurrentPurchaseTableModel()
 				.addItem(new SoldItem(stockItem, quantity));
-				if (false) {
-					stockItem.setQuantity(stockItem.getQuantity());
-				}
-				else { 
 					stockItem.setQuantity(stockItem.getQuantity() - quantity);
 				}
-			}
 		}
 	}
 

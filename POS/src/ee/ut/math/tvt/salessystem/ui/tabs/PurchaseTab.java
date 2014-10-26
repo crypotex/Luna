@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 public class PurchaseTab {
 
 	private static final Logger log = Logger.getLogger(PurchaseTab.class);
-	
+
 	private final SalesDomainController domainController;
 	private JButton newPurchase;
 	private JButton submitPurchase;
@@ -166,7 +166,7 @@ public class PurchaseTab {
 			log.error(e1.getMessage());
 		}
 	}
-	
+
 	/**
 	 * @author - Andre
 	 * SubmitPurchaseButtonClicked method, gives you a new JDialog for submitting purchase.
@@ -183,6 +183,7 @@ public class PurchaseTab {
 
 			final double paySum = toPay;
 			JDialog confirmDialog = new JDialog(new JFrame(), "Confirm page!");
+			confirmDialog.setAlwaysOnTop(true);
 			JLabel amountToPayString = new JLabel("Amount to pay: ");
 			JTextField fieldAmountToPay = new JTextField(Double.toString(paySum));
 			fieldAmountToPay.setEditable(false);
@@ -196,7 +197,7 @@ public class PurchaseTab {
 			JButton declinePurchaseButton = new JButton("Decline Purchase");
 			fieldAmountPaid.addActionListener(new ActionListener() {
 				@Override
-				
+
 				public void actionPerformed(ActionEvent e) {
 					/**
 					 * Checks if amount paid is is correctly formated and not negative.
@@ -207,10 +208,12 @@ public class PurchaseTab {
 						fieldAmountOfChange.setText(Double.toString(change));
 						acceptPurchaseButton.setEnabled(true);
 					} else {
-							JOptionPane.showMessageDialog(null,
-									"Error: Negative amount of payment received",
-									"Error Message",JOptionPane.ERROR_MESSAGE);
+						confirmDialog.setAlwaysOnTop(false);
+						JOptionPane.showMessageDialog(null,
+								"Error: Negative amount of payment received",
+								"Error Message",JOptionPane.ERROR_MESSAGE);
 					}
+					confirmDialog.setAlwaysOnTop(true);
 				}
 			});
 			acceptPurchaseButton.addActionListener(new ActionListener() {
@@ -220,22 +223,23 @@ public class PurchaseTab {
 				 */
 				@Override
 				public void actionPerformed(ActionEvent e) {
-						if (Double.parseDouble(fieldAmountOfChange.getText())<0 || fieldAmountPaid.getText().isEmpty()) {
-							JOptionPane.showMessageDialog(null,
-									"Error: Ask moar money",
-									"Error Message",JOptionPane.ERROR_MESSAGE);
-						} else { 
-							HistoryItem it = new HistoryItem(model.getCurrentPurchaseTableModel().getTableRows(),
-									paySum,Double.parseDouble(fieldAmountOfChange.getText()));
-							model.getHistoryItemsModel().acceptedPurchase(it);
-							endSale();
-							model.getCurrentPurchaseTableModel().clear();
-							confirmDialog.setVisible(false);
-						
+					if (Double.parseDouble(fieldAmountOfChange.getText())<0 || fieldAmountPaid.getText().isEmpty()) {
+						confirmDialog.setAlwaysOnTop(false);
+						JOptionPane.showMessageDialog(null,
+								"Error: Ask moar money",
+								"Error Message",JOptionPane.ERROR_MESSAGE);
+					} else { 
+						HistoryItem it = new HistoryItem(model.getCurrentPurchaseTableModel().getTableRows(),
+								paySum,Double.parseDouble(fieldAmountOfChange.getText()));
+						model.getHistoryItemsModel().acceptedPurchase(it);
+						endSale();
+						model.getCurrentPurchaseTableModel().clear();
+						confirmDialog.setVisible(false);
+
 					}
 				}
 			});
-			
+
 			declinePurchaseButton.addActionListener(new ActionListener() {
 				/**
 				 * @author - Andre.
@@ -249,7 +253,7 @@ public class PurchaseTab {
 					endSale();
 					model.getCurrentPurchaseTableModel().clear();
 					confirmDialog.setVisible(false);
-					
+
 				}
 			});
 			/**
@@ -260,7 +264,7 @@ public class PurchaseTab {
 			GridBagLayout gb = new GridBagLayout();
 			GridBagConstraints gc = new GridBagConstraints();
 			confirmDialog.setLayout(gb);
-			
+
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.weightx = 0.5;
 			gc.gridx = 0;
@@ -302,21 +306,21 @@ public class PurchaseTab {
 			gc.gridy = 3;
 			confirmDialog.add(declinePurchaseButton,gc);
 
-			// confirmDialog.setAlwaysOnTop(true);
+			confirmDialog.setLocation(550, 300);
 			confirmDialog.setVisible(true);
-				
-			
-//			domainController.submitCurrentPurchase(
-//					model.getCurrentPurchaseTableModel().getTableRows());
+
+
+			//			domainController.submitCurrentPurchase(
+			//					model.getCurrentPurchaseTableModel().getTableRows());
 		} catch (Exception e1) {
 			System.out.println(e1.getMessage());
 			log.error(e1.getMessage());
 		}
 	}
 
-	
-	
-	
+
+
+
 	/* === Helper methods that bring the whole purchase-tab to a certain state
 	 *     when called.
 	 */
@@ -389,14 +393,14 @@ public class PurchaseTab {
 
 	public static boolean isNumeric(String str)  
 	{  
-	  try  
-	  {  
-	    double d = Double.parseDouble(str);  
-	  }  
-	  catch(NumberFormatException nfe)  
-	  {  
-	    return false;  
-	  }  
-	  return true;  
+		try  
+		{  
+			double d = Double.parseDouble(str);  
+		}  
+		catch(NumberFormatException nfe)  
+		{  
+			return false;  
+		}  
+		return true;  
 	}
 }
