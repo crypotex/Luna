@@ -14,7 +14,6 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 	 * Somehow the serialVersionUID makes it better :) 
 	 */
 	private static final long serialVersionUID = 1L;
-	//private ArrayList<HistoryItem> rows = new ArrayList<HistoryItem>();
 	
 	public HistoryItemsModel() {
 		super(new String[] {"Date","Time","Total Price"});

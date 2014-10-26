@@ -134,14 +134,9 @@ public class PurchaseTab {
 		return b;
 	}
 
-
-
-
-
 	/* === Event handlers for the menu buttons
 	 *     (get executed when the buttons are clicked)
 	 */
-
 
 	/** Event handler for the <code>new purchase</code> event. */
 	protected void newPurchaseButtonClicked() {
@@ -159,6 +154,9 @@ public class PurchaseTab {
 	protected void cancelPurchaseButtonClicked() {
 		log.info("Sale cancelled");
 		try {
+			for (SoldItem it : model.getCurrentPurchaseTableModel().getTableRows()){
+				model.getWarehouseTableModel().getItemByName(it.getName()).addQuantity(it.getQuantity());;
+			}			
 			domainController.cancelCurrentPurchase();
 			endSale();
 			model.getCurrentPurchaseTableModel().clear();
@@ -170,7 +168,6 @@ public class PurchaseTab {
 	/**
 	 * @author - Andre
 	 * SubmitPurchaseButtonClicked method, gives you a new JDialog for submitting purchase.
-	 * TODO: gridlayoutstuff
 	 */
 	protected void submitPurchaseButtonClicked() {
 		log.info("Sale complete");

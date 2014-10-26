@@ -26,9 +26,6 @@ import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 public class HistoryTab {
 	
     private SalesSystemModel model;
-    //private JTable historyTable;
-    //private JTable purchaseTable;
-    // TODO - implement!
 
     public HistoryTab(SalesSystemModel model) {
     	this.model = model;
@@ -72,7 +69,9 @@ public class HistoryTab {
 			public void mouseEntered(MouseEvent e) { }
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//author: Annika
+				/**
+				 * @author: Annika
+				 */
 				JDialog oldPurchaseWindow = new JDialog(new JFrame(), "History of order");
 				PurchaseInfoTableModel pitm = new PurchaseInfoTableModel();
 				JTable soldItemsTable = new JTable(pitm);
@@ -115,25 +114,11 @@ public class HistoryTab {
     	gc.weighty = 0.5;
     	panel.setLayout(gb);
     	panel.add(createHistoryTable(), gc);
-    	gc.weightx = 0.5;
-    	gc.weightx = 0.5;
-    	gc.gridy = 1;
-    	//panel.add(createPurchaseTable(), gc);
     	
     	panel.setBorder(BorderFactory.createTitledBorder("Previous purchases"));
     	panel.setVisible(true);
     	return panel;
     	
-    }
-
-//	private JScrollPane createPurchaseTable() {
-//		JTable purchaseTable = new JTable(model.getHistoryItemsModel().getHistoryItemByRowIndex(0).getPurchaseItemList());
-//    	JTableHeader header = historyTable.getTableHeader();
-//    	
-//    	header.setReorderingAllowed(false);
-//    	JScrollPane scrollPane = new JScrollPane(purchaseTable);
-//    	return scrollPane;
-//	}
-    
+    } 
     
 }

@@ -205,9 +205,11 @@ public class PurchaseItemPanel extends JPanel implements ComboBoxEditor {
 	 * Add new item to the cart.
 	 */
 	public void addItemEventHandler() {
-		// add chosen item to the shopping cart.
-		//modified by Annika, reason: to see if entered quantity is bigger than in stock (displays warning message), 
-		//if purchase is cancelled set the first quantity, else decrease the quantity  
+		/** add chosen item to the shopping cart.
+		modified by Annika, reason: to see if entered quantity is bigger than in stock (displays warning message), 
+		if purchase is cancelled set the first quantity, else decrease the quantity 
+		@author - Annika
+		*/
 		StockItem stockItem = getStockItemByName();
 		if (stockItem != null) {
 			int quantity;
