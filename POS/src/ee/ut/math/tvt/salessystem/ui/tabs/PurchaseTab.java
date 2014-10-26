@@ -2,7 +2,6 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -12,12 +11,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -196,7 +191,6 @@ public class PurchaseTab {
 			JTextField fieldAmountOfChange = new JTextField("0");
 			fieldAmountOfChange.setEnabled(false);
 			JTextField fieldAmountPaid = new JTextField();
-			System.out.println("Meetodis purchaseButtonClicked");
 			fieldAmountPaid.addActionListener(new ActionListener() {
 				@Override
 				
@@ -205,13 +199,13 @@ public class PurchaseTab {
 					 * Checks if amount paid is is correctly formated and not negative.
 					 * @author - Andre. 
 					 */
-					if (Double.parseDouble(fieldAmountPaid.getText())< 0){
-						JOptionPane.showMessageDialog(null,
-								"Error: Negative amount of payment received",
-								"Error Message",JOptionPane.ERROR_MESSAGE);
-					} else {
+					if (isNumeric(fieldAmountOfChange.getText()) && Double.parseDouble(fieldAmountPaid.getText())>= 0) {
 						double change = Double.parseDouble(fieldAmountPaid.getText()) - paySum;
 						fieldAmountOfChange.setText(Double.toString(change));
+					} else {
+							JOptionPane.showMessageDialog(null,
+									"Error: Negative amount of payment received",
+									"Error Message",JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -224,17 +218,19 @@ public class PurchaseTab {
 				 */
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if(Double.parseDouble(fieldAmountOfChange.getText())<0) {
-						JOptionPane.showMessageDialog(null,
-								"Error: Ask moar money",
-								"Error Message",JOptionPane.ERROR_MESSAGE);
-					} else {
-						HistoryItem it = new HistoryItem(model.getCurrentPurchaseTableModel().getTableRows(),
-								paySum,Double.parseDouble(fieldAmountOfChange.getText()));
-						model.getHistoryItemsModel().acceptedPurchase(it);
-						endSale();
-						model.getCurrentPurchaseTableModel().clear();
-						confirmDialog.setVisible(false);
+						if (Double.parseDouble(fieldAmountOfChange.getText())<0 || fieldAmountPaid.getText().isEmpty()) {
+							JOptionPane.showMessageDialog(null,
+									"Error: Ask moar money",
+									"Error Message",JOptionPane.ERROR_MESSAGE);
+						} else { 
+							HistoryItem it = new HistoryItem(model.getCurrentPurchaseTableModel().getTableRows(),
+									paySum,Double.parseDouble(fieldAmountOfChange.getText()));
+							model.getHistoryItemsModel().acceptedPurchase(it);
+							System.out.println(it.toString());
+							endSale();
+							model.getCurrentPurchaseTableModel().clear();
+							confirmDialog.setVisible(false);
+						
 					}
 				}
 			});
@@ -259,11 +255,11 @@ public class PurchaseTab {
 			 * @author - Andre.
 			 * Graphics stuff now...
 			 */
-			confirmDialog.setSize(200,300);
+			confirmDialog.setSize(300,250);
 			GridBagLayout gb = new GridBagLayout();
 			GridBagConstraints gc = new GridBagConstraints();
 			confirmDialog.setLayout(gb);
-
+			
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.weightx = 0.5;
 			gc.gridx = 0;
@@ -305,10 +301,9 @@ public class PurchaseTab {
 			gc.gridy = 3;
 			confirmDialog.add(declinePurchaseButton,gc);
 
-			confirmDialog.setAlwaysOnTop(true);
+			// confirmDialog.setAlwaysOnTop(true);
 			confirmDialog.setVisible(true);
-			
-			
+				
 			
 //			domainController.submitCurrentPurchase(
 //					model.getCurrentPurchaseTableModel().getTableRows());

@@ -38,11 +38,11 @@ public class HistoryTab {
         GridBagConstraints gc = new GridBagConstraints();
         panel.setLayout(gb);
         // We might need to change these
-        gc.fill = GridBagConstraints.HORIZONTAL;
+        gc.fill = GridBagConstraints.BOTH;
         gc.anchor = GridBagConstraints.NORTH;
         gc.gridwidth = GridBagConstraints.REMAINDER;
-        gc.weightx = 1.0d;
-        gc.weighty = 0d;
+        gc.weightx = 0.5;
+        gc.weighty = 0.5;
         
         // Draws the historytable, which has a mouselistener for showing purchaseTable
         panel.add(drawHistoryMainTable(),gc);
@@ -54,7 +54,7 @@ public class HistoryTab {
      * rows of mouse events, but we only care about mouseClicked event. 
      * @return JTable
      */
-    private JTable createHistoryTable() {
+    private JScrollPane createHistoryTable() {
     	JTable historyTable = new JTable(model.getHistoryItemsModel());
     	historyTable.addMouseListener(new MouseListener() {
 			@Override
@@ -70,18 +70,15 @@ public class HistoryTab {
 				System.out.println("Helloo, do something else here");
 			}
 		});
-    	return historyTable;
-    }
-    
-    private Component drawHistoryMainTable() {
-    	JPanel panel = new JPanel();
-    	
-    	JTable historyTable = createHistoryTable();
-    	JTable purchaseTable = new JTable();
     	JTableHeader header = historyTable.getTableHeader();
     	
     	header.setReorderingAllowed(false);
     	JScrollPane scrollPane = new JScrollPane(historyTable);
+    	return scrollPane;
+    }
+    
+    private Component drawHistoryMainTable() {
+    	JPanel panel = new JPanel();
     	
     	GridBagConstraints gc = new GridBagConstraints();
     	GridBagLayout gb = new GridBagLayout();
@@ -89,9 +86,10 @@ public class HistoryTab {
     	gc.weightx = 1.0;
     	gc.weighty = 1.0;
     	panel.setLayout(gb);
-    	panel.add(scrollPane, gc);
+    	panel.add(createHistoryTable(), gc);
     	
     	panel.setBorder(BorderFactory.createTitledBorder("Previous purchases"));
+    	panel.setVisible(true);
     	return panel;
     	
     }
