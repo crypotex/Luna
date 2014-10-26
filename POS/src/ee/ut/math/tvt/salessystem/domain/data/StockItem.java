@@ -108,5 +108,8 @@ public class StockItem implements Cloneable, DisplayableItem {
             new StockItem(getId(), getName(), getDescription(), getPrice(), getQuantity());
         return item;
     }
-		
+	
+    public void addQuantity(int quan) {
+    	this.quantity += quan;
+    }
 }

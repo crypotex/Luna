@@ -1,5 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
@@ -12,10 +14,18 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
@@ -26,17 +36,12 @@ import org.apache.log4j.Logger;
 public class PurchaseTab {
 
 	private static final Logger log = Logger.getLogger(PurchaseTab.class);
-
+	
 	private final SalesDomainController domainController;
-
 	private JButton newPurchase;
-
 	private JButton submitPurchase;
-
 	private JButton cancelPurchase;
-
 	private PurchaseItemPanel purchasePane;
-
 	private SalesSystemModel model;
 
 
@@ -165,24 +170,96 @@ public class PurchaseTab {
 			log.error(e1.getMessage());
 		}
 	}
-
-
-	/** Event handler for the <code>submit purchase</code> event. */
+	
+	/**
+	 * @author - Andre
+	 * SubmitPurchaseButtonClicked method, gives you a new JDialog for submitting purchase.
+	 * TODO: gridlayoutstuff
+	 */
 	protected void submitPurchaseButtonClicked() {
 		log.info("Sale complete");
 		try {
 			log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
-			domainController.submitCurrentPurchase(
-					model.getCurrentPurchaseTableModel().getTableRows()
-					);
-			endSale();
-			model.getCurrentPurchaseTableModel().clear();
-		} catch (VerificationFailedException e1) {
+			double toPay = 0;
+			for (SoldItem item : model.getCurrentPurchaseTableModel().getTableRows()){
+				toPay += item.getSum();
+			}
+			JDialog confirmPage = new JDialog(new JFrame(), "Confirm page!");
+			JLabel amountToPayString = new JLabel("Amount to pay: " + toPay);
+			JLabel amountPaid = new JLabel("Amount of money received: ");
+			JLabel amountOfChange = new JLabel("Amount of change: ");
+			JTextField fieldAmountOfChange = new JTextField("0");
+			JTextField fieldAmountPaid = new JTextField();
+			System.out.println("Meetodis purchaseButtonClicked");
+			fieldAmountPaid.addActionListener(new ActionListener() {
+				@Override
+				
+				public void actionPerformed(ActionEvent e) {
+					/**
+					 * Checks if amount paid is is correctly formated and not negative.
+					 * @author - Andre. 
+					 */
+					if (Double.parseDouble(fieldAmountPaid.getText())< 0 ||
+							isNumeric(fieldAmountPaid.getText())){
+						JOptionPane.showMessageDialog(null,
+								"Error: Please try to input a correct number",
+								"Error Message",JOptionPane.ERROR_MESSAGE);
+					} else {
+						fieldAmountOfChange.setText(fieldAmountPaid.getText());
+					}
+				}
+			});
+			JButton acceptPurchaseButton = new JButton("Accept Purchase");
+			JButton declinePurchaseButton = new JButton("Decline Purchase");
+			final double paySum = toPay;
+			acceptPurchaseButton.addActionListener(new ActionListener() {
+				/**
+				 * @author - Andre
+				 * Checks if everything ok, then adds historyitem to the historyItemModel
+				 */
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(Double.parseDouble(fieldAmountOfChange.getText())<0) {
+						JOptionPane.showMessageDialog(null,
+								"Error: Ask moar money",
+								"Error Message",JOptionPane.ERROR_MESSAGE);
+					} else {
+						HistoryItem it = new HistoryItem(model.getCurrentPurchaseTableModel().getTableRows(),
+								paySum,Double.parseDouble(fieldAmountOfChange.getText()));
+						model.getHistoryItemsModel().acceptedPurchase(it);
+						endSale();
+						model.getCurrentPurchaseTableModel().clear();
+					}
+				}
+			});
+			
+			declinePurchaseButton.addActionListener(new ActionListener() {
+				/**
+				 * @author - Andre.
+				 * Adds quantities back to warehouse stock, then clears table
+				 */
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (SoldItem it : model.getCurrentPurchaseTableModel().getTableRows()){
+						model.getWarehouseTableModel().getItemByName(it.getName()).addQuantity(it.getQuantity());;
+					}
+					endSale();
+					model.getCurrentPurchaseTableModel().clear();
+					
+				}
+			});
+			
+			
+			
+			
+			
+//			domainController.submitCurrentPurchase(
+//					model.getCurrentPurchaseTableModel().getTableRows());
+		} catch (Exception e1) {
+			System.out.println(e1.getMessage());
 			log.error(e1.getMessage());
 		}
 	}
-
-
 
 	/* === Helper methods that bring the whole purchase-tab to a certain state
 	 *     when called.
@@ -254,4 +331,16 @@ public class PurchaseTab {
 		return gc;
 	}
 
+	public static boolean isNumeric(String str)  
+	{  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
 }

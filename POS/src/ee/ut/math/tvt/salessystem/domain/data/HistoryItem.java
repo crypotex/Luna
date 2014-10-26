@@ -17,7 +17,7 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	private double sum;
 	private double payment;
 	
-	public HistoryItem(ArrayList<SoldItem> soldItems, double sum ,double payment){
+	public HistoryItem(List<SoldItem> soldItems, double sum ,double payment){
 		Date newDate = new Date();
 		this.id = newDate.getTime();
 		this.purchaseItemList = soldItems;

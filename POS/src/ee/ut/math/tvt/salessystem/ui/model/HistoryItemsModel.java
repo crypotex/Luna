@@ -1,9 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
-import java.util.ArrayList;
-
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemTableModel;
 /**
  * Adds HistoryItemsModel to the model , so here we deal with historyItems 
@@ -13,7 +10,11 @@ import ee.ut.math.tvt.salessystem.ui.model.SalesSystemTableModel;
  */
 public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 	
-	private ArrayList<HistoryItem> historyTabRows = new ArrayList<HistoryItem>();
+	/**
+	 * Somehow the serialVersionUID makes it better :) 
+	 */
+	private static final long serialVersionUID = 1L;
+	//private ArrayList<HistoryItem> rows = new ArrayList<HistoryItem>();
 	
 	public HistoryItemsModel() {
 		super(new String[] {"Date","Time","Total Price"});
@@ -24,7 +25,7 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 	}
 	
 	public int getRowCount(){
-		return historyTabRows.size();
+		return rows.size();
 	}
 	
 	@Override
@@ -43,7 +44,7 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 	
 	public void acceptedPurchase(HistoryItem acceptedPurchase){
 		try {
-			historyTabRows.add(acceptedPurchase);
+			rows.add(acceptedPurchase);
 			fireTableDataChanged();
 		} catch (Exception e) {
 			throw new RuntimeException("HistoryItemsModel Error : AcceptedPurchase Error: Line 49");
@@ -52,7 +53,7 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 	
 	public HistoryItem getHistoryItemByRowIndex(int row){
 		try {
-			return historyTabRows.get(row);
+			return rows.get(row);
 		} catch (Exception e) {
 			throw new RuntimeException("HistoryItemsModel Error : getHistoryItemByRowIndex Error: Line 57");
 		}
@@ -66,7 +67,7 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 			buffer.append(headers[i] + "\t");
 		buffer.append("\n");
 
-		for (final HistoryItem item : historyTabRows) {
+		for (final HistoryItem item : rows) {
 			buffer.append(item.getDateAsString() + "\t");
 			buffer.append(item.getTimeStampAsString() + "\t");
 			buffer.append(item.getSum() + "\t");

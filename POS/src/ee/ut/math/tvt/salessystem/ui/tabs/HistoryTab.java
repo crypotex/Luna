@@ -55,7 +55,7 @@ public class HistoryTab {
      * @return JTable
      */
     private JTable createHistoryTable() {
-    	JTable historyTable = new JTable(model.getWarehouseTableModel());
+    	JTable historyTable = new JTable(model.getHistoryItemsModel());
     	historyTable.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) { }
@@ -67,7 +67,7 @@ public class HistoryTab {
 			public void mouseEntered(MouseEvent e) { }
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Helloo");
+				System.out.println("Helloo, do something else here");
 			}
 		});
     	return historyTable;
@@ -79,6 +79,7 @@ public class HistoryTab {
     	JTable historyTable = createHistoryTable();
     	JTable purchaseTable = new JTable();
     	JTableHeader header = historyTable.getTableHeader();
+    	
     	header.setReorderingAllowed(false);
     	JScrollPane scrollPane = new JScrollPane(historyTable);
     	
