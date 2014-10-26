@@ -83,16 +83,31 @@ public class HistoryTab {
     	GridBagConstraints gc = new GridBagConstraints();
     	GridBagLayout gb = new GridBagLayout();
     	gc.fill = GridBagConstraints.BOTH;
-    	gc.weightx = 1.0;
-    	gc.weighty = 1.0;
+    	gc.gridx = 0;
+    	gc.gridy = 0;
+    	gc.weightx = 0.5;
+    	gc.weighty = 0.5;
     	panel.setLayout(gb);
     	panel.add(createHistoryTable(), gc);
+    	gc.weightx = 0.5;
+    	gc.weightx = 0.5;
+    	gc.gridy = 1;
+    	//panel.add(createPurchaseTable(), gc);
     	
     	panel.setBorder(BorderFactory.createTitledBorder("Previous purchases"));
     	panel.setVisible(true);
     	return panel;
     	
     }
+
+//	private JScrollPane createPurchaseTable() {
+//		JTable purchaseTable = new JTable(model.getHistoryItemsModel().getHistoryItemByRowIndex(0).getPurchaseItemList());
+//    	JTableHeader header = historyTable.getTableHeader();
+//    	
+//    	header.setReorderingAllowed(false);
+//    	JScrollPane scrollPane = new JScrollPane(purchaseTable);
+//    	return scrollPane;
+//	}
     
     
 }

@@ -191,6 +191,9 @@ public class PurchaseTab {
 			JTextField fieldAmountOfChange = new JTextField("0");
 			fieldAmountOfChange.setEnabled(false);
 			JTextField fieldAmountPaid = new JTextField();
+			JButton acceptPurchaseButton = new JButton("Accept Purchase");
+			acceptPurchaseButton.setEnabled(false);
+			JButton declinePurchaseButton = new JButton("Decline Purchase");
 			fieldAmountPaid.addActionListener(new ActionListener() {
 				@Override
 				
@@ -202,6 +205,7 @@ public class PurchaseTab {
 					if (isNumeric(fieldAmountOfChange.getText()) && Double.parseDouble(fieldAmountPaid.getText())>= 0) {
 						double change = Double.parseDouble(fieldAmountPaid.getText()) - paySum;
 						fieldAmountOfChange.setText(Double.toString(change));
+						acceptPurchaseButton.setEnabled(true);
 					} else {
 							JOptionPane.showMessageDialog(null,
 									"Error: Negative amount of payment received",
@@ -209,8 +213,6 @@ public class PurchaseTab {
 					}
 				}
 			});
-			JButton acceptPurchaseButton = new JButton("Accept Purchase");
-			JButton declinePurchaseButton = new JButton("Decline Purchase");
 			acceptPurchaseButton.addActionListener(new ActionListener() {
 				/**
 				 * @author - Andre
@@ -226,7 +228,6 @@ public class PurchaseTab {
 							HistoryItem it = new HistoryItem(model.getCurrentPurchaseTableModel().getTableRows(),
 									paySum,Double.parseDouble(fieldAmountOfChange.getText()));
 							model.getHistoryItemsModel().acceptedPurchase(it);
-							System.out.println(it.toString());
 							endSale();
 							model.getCurrentPurchaseTableModel().clear();
 							confirmDialog.setVisible(false);
