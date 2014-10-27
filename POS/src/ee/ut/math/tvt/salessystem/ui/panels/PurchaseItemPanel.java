@@ -23,7 +23,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
+import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
@@ -36,6 +39,9 @@ import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 public class PurchaseItemPanel extends JPanel implements ComboBoxEditor {
 
 	private static final long serialVersionUID = 1L;
+
+	private EventList<String> objects;
+	private ArrayList<String> elements;
 
 	// Text field on the dialogPane
 	private JTextField barCodeField;
@@ -97,31 +103,51 @@ public class PurchaseItemPanel extends JPanel implements ComboBoxEditor {
 		nameField = new JComboBox<String>();
 		JTextField tf = new JTextField();
 		nameField.getEditor().setItem(tf);
+		nameField.setPrototypeDisplayValue("XXXXXXXXXXX"); // see kast ei hyppa ringi siis
 
-		ArrayList<String> objects = new ArrayList<String>();
+		elements = new ArrayList<String>();
 
 		//loeme jarjest lao andmeid ja lisame need comboboxi
 		for (int i = 0; i < model.getWarehouseTableModel().getRowCount(); i++) {
-			objects.add(model.getWarehouseTableModel().getValueAt(i, 1).toString());
+			elements.add(model.getWarehouseTableModel().getValueAt(i, 1).toString());
 		}
-		String[] elements = objects.toArray(new String[objects.size()]);
+		
+		objects = GlazedLists.eventListOf(elements.toArray(new String[elements.size()]));
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				AutoCompleteSupport.install(nameField, GlazedLists.eventListOf(elements));
+				AutoCompleteSupport.install(nameField, objects);
 			}
 		});
-	
-		priceField = new JTextField();
+		
+		// Author: Annika&Viki
+		// Reason: When new item added to stock then combobox is updated
+		model.getWarehouseTableModel().addTableModelListener(new TableModelListener() {
 
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				ArrayList<String> newProducts = new ArrayList<String>();
+
+				// If a new product was added then it's added to the existing list of products
+				for (int i = 0; i < model.getWarehouseTableModel().getRowCount(); i++) {
+					if (elements.contains(model.getWarehouseTableModel().getValueAt(i, 1).toString()) == false) {
+						elements.add(model.getWarehouseTableModel().getValueAt(i, 1).toString());
+						newProducts.add(model.getWarehouseTableModel().getValueAt(i, 1).toString());
+					}
+				}
+				objects.addAll(newProducts);
+			}
+		});
+
+		priceField = new JTextField();
 
 		// Fill the dialog fields if the bar code text field loses focus
 		nameField.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fillDialogFields();
-				
+
 			}
 		});
 
@@ -209,7 +235,7 @@ public class PurchaseItemPanel extends JPanel implements ComboBoxEditor {
 		modified by Annika, reason: to see if entered quantity is bigger than in stock (displays warning message), 
 		if purchase is cancelled set the first quantity, else decrease the quantity 
 		@author - Annika
-		*/
+		 */
 		StockItem stockItem = getStockItemByName();
 		if (stockItem != null) {
 			int quantity;
@@ -235,8 +261,8 @@ public class PurchaseItemPanel extends JPanel implements ComboBoxEditor {
 				//vahendatakse kogust, aga kui ost tyhistatakse, siis pannakse esialgne kogus tagasi
 				model.getCurrentPurchaseTableModel()
 				.addItem(new SoldItem(stockItem, quantity));
-					stockItem.setQuantity(stockItem.getQuantity() - quantity);
-				}
+				stockItem.setQuantity(stockItem.getQuantity() - quantity);
+			}
 		}
 	}
 
