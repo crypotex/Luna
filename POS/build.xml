@@ -161,7 +161,7 @@
 
 		<!-- Runs the console -->
 		<target name="runc" depends="build" description="Run the application (console)">
-			<java classname="ee.ut.math.tvt.[team].Intro" classpathref="run.classpath" fork="yes">
+			<java classname="ee.ut.math.tvt.Luna.Intro" classpathref="run.classpath" fork="yes">
 				<arg value="console" />
 			</java>
 		</target>

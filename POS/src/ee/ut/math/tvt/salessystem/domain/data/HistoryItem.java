@@ -5,16 +5,31 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.*;
 /**
  * Handle and store HistoryItems. (They are displayable in HistoryTab)
  * @author - Andre. 
  *
  */
+
+@Entity
+@Table(name="HISTORYITEM")
 public class HistoryItem implements Cloneable, DisplayableItem {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
+	
+	@Transient
 	private List<SoldItem> purchaseItemList = new ArrayList<SoldItem>();
+	
+	@Column(name="date")
 	private Date date;
+	
+	@Column(name="sum")
 	private double sum;
+	
+	@Column(name="payment")
 	private double payment;
 	
 	public HistoryItem(List<SoldItem> soldItems, double sum ,double payment){

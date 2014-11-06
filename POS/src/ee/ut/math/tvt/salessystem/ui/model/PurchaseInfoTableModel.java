@@ -61,9 +61,26 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
          * XXX In case such stockItem already exists increase the quantity of the
          * existing stock.
          */
-        
-        rows.add(item);
-        log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
-        fireTableDataChanged();
+    	int wantedQuantity = item.getQuantity();
+		SoldItem existingItem = null;
+		
+		for(final SoldItem row : rows) {
+			if (row.getStockItem().getId().equals(item.getStockItem().getId())) {
+				wantedQuantity += row.getQuantity();
+				existingItem = row;
+				break;
+			}
+		}
+			
+		if (existingItem != null) {
+			existingItem.setQuantity(wantedQuantity);
+			log.debug("Increased " + item.getName() + " quantity by " + item.getQuantity());
+		}
+		else {
+			rows.add(item);
+			log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
+		}
+		fireTableDataChanged();
+
     }
 }
