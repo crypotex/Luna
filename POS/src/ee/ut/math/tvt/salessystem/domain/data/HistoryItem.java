@@ -2,7 +2,6 @@ package ee.ut.math.tvt.salessystem.domain.data;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,9 +19,8 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	//@OneToMany(mappedBy="sale")
-	@Transient
-	private List<SoldItem> purchaseItemList = new ArrayList<SoldItem>();
+	@OneToMany(mappedBy="sale")
+	private List<SoldItem> purchaseItemList;
 	
 	@Column(name="date")
 	private Date date;

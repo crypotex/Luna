@@ -15,14 +15,12 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	//@ManyToOne
-	//@JoinColumn(name="stockitem_id", nullable=false)
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="stockitem_id", nullable=false)
 	private HistoryItem sale;
 	
-	//@ManyToOne
-	//@JoinColumn(name="sale_id", nullable=false)
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="sale_id", nullable=false)
 	private StockItem stockItem;
 
 	@Column(name = "name")

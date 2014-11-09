@@ -1,7 +1,11 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import org.apache.log4j.Logger;
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemTableModel;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 /**
  * Adds HistoryItemsModel to the model , so here we deal with historyItems 
  * and their adding
@@ -14,6 +18,8 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 	 * Somehow the serialVersionUID makes it better :) 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger log = Logger.getLogger(HistoryItemsModel.class);
 	
 	public HistoryItemsModel() {
 		super(new String[] {"Date","Time","Total Price"});
@@ -75,4 +81,22 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 
 		return buffer.toString();
 	}
+	
+	/**
+     * Add new StockItem to table.
+     */
+    public void addHistoryItem(final HistoryItem sale) {
+
+                HibernateUtil.currentSession().beginTransaction();
+                HibernateUtil.currentSession().save(sale);
+                for (SoldItem item : sale.getPurchaseItemList()) {
+                        HibernateUtil.currentSession().save(item);
+                }
+                HibernateUtil.currentSession().flush();
+                HibernateUtil.currentSession().getTransaction().commit();
+
+        rows.add(sale);
+        log.debug("Added purchase " + sale.getId() + " with sum of " + sale.getSum());
+        fireTableDataChanged();
+    }
 }

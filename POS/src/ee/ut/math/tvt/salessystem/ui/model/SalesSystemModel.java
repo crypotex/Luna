@@ -2,7 +2,13 @@ package ee.ut.math.tvt.salessystem.ui.model;
 
 import org.apache.log4j.Logger;
 
+import java.util.List;
+
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 /**
  * Main model. Holds all the other models.
@@ -12,7 +18,7 @@ public class SalesSystemModel {
 
     private StockTableModel warehouseTableModel; // Warehouse model
     private PurchaseInfoTableModel currentPurchaseTableModel; // Current shopping cart model
-    private HistoryItemsModel historyTableModel; // HistoryTableModel
+    private HistoryItemsModel currenthistoryTableModel; // HistoryTableModel
     private final SalesDomainController domainController;
 
     /**
@@ -24,10 +30,14 @@ public class SalesSystemModel {
         
         warehouseTableModel = new StockTableModel();
         currentPurchaseTableModel = new PurchaseInfoTableModel();
-        historyTableModel = new HistoryItemsModel();
+        currenthistoryTableModel = new HistoryItemsModel();
+       
+        currenthistoryTableModel = new HistoryItemsModel();
         // populate stock model with data from the warehouse
         warehouseTableModel.populateWithData(domainController.loadWarehouseState());
-
+        // same for history
+        List<SoldItem> history = HibernateUtil.currentSession().createQuery("from HistoryItem").list();
+        currentPurchaseTableModel.populateWithData(history);
     }
 
     public StockTableModel getWarehouseTableModel() {
@@ -39,7 +49,10 @@ public class SalesSystemModel {
     }
     
     public HistoryItemsModel getHistoryItemsModel() {
-    	return historyTableModel;
+    	return currenthistoryTableModel;
     }
     
+    public List<StockItem> getWarehouseState() {
+        return this.getWarehouseTableModel().getTableRows();
+    }
 }
