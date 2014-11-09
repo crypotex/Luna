@@ -20,6 +20,7 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
+	//@OneToMany(mappedBy="sale")
 	@Transient
 	private List<SoldItem> purchaseItemList = new ArrayList<SoldItem>();
 	
