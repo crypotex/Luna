@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 import javax.imageio.ImageIO;
@@ -26,6 +27,8 @@ public class IntroUI extends JFrame {
 	private static LinkedProperties versionProperties = new LinkedProperties();
 
 	public IntroUI() {
+		Date a = new Date();
+		System.out.println(a);
 		this.applicationProperties = getApplicationPropertiesFromFile();
 		this.versionProperties = getVersionPropertiesFromFile();
 

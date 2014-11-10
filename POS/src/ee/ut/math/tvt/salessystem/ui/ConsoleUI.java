@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
-
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 
@@ -117,10 +117,13 @@ public class ConsoleUI {
 		else if (c[0].equals("p"))
 			try {
 			    List<SoldItem> soldItems = new ArrayList<SoldItem>();
+			    double sum = 0;
 			    for(StockItem stockItem : cart) {
 			        soldItems.add(new SoldItem(stockItem, stockItem.getQuantity()));
+			        sum += stockItem.getPrice();
 			    }
-				dc.submitCurrentPurchase(soldItems);
+			    HistoryItem it = new HistoryItem(soldItems, sum, sum); // might want to implement payment
+				dc.submitCurrentPurchase(it);
 				cart.clear();
 			} catch (VerificationFailedException e) {
 				log.error(e.getMessage());

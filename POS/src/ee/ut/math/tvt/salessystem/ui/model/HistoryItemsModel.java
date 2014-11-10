@@ -78,7 +78,6 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 			buffer.append(item.getSum() + "\t");
 			buffer.append("\n");
 		}
-
 		return buffer.toString();
 	}
 	
@@ -86,14 +85,14 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
      * Add new StockItem to table.
      */
     public void addHistoryItem(final HistoryItem sale) {
-
-                HibernateUtil.currentSession().beginTransaction();
-                HibernateUtil.currentSession().save(sale);
-                for (SoldItem item : sale.getPurchaseItemList()) {
-                        HibernateUtil.currentSession().save(item);
-                }
-                HibernateUtil.currentSession().flush();
-                HibernateUtil.currentSession().getTransaction().commit();
+    	
+    	HibernateUtil.currentSession().beginTransaction();
+        HibernateUtil.currentSession().save(sale);
+        for (SoldItem item : sale.getPurchaseItemList()) {
+        	HibernateUtil.currentSession().save(item);
+        }
+        HibernateUtil.currentSession().flush();
+        HibernateUtil.currentSession().getTransaction().commit();
 
         rows.add(sale);
         log.debug("Added purchase " + sale.getId() + " with sum of " + sale.getSum());

@@ -19,16 +19,16 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@OneToMany(mappedBy="sale")
+	@OneToMany(mappedBy="historyItem")
 	private List<SoldItem> purchaseItemList;
 	
-	@Column(name="date")
+	@Column(name="DATE")
 	private Date date;
 	
-	@Column(name="sum")
+	@Column(name="SUMMA")
 	private double sum;
 	
-	@Column(name="payment")
+	@Column(name="PAYMENT")
 	private double payment;
 	
 	public HistoryItem(List<SoldItem> soldItems, double sum ,double payment){
@@ -39,7 +39,9 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 		this.sum = sum;
 		this.payment = payment;
 	}
-	
+	public HistoryItem(){
+		
+	}
 	@Override
 	public Long getId() {
 		return id;
