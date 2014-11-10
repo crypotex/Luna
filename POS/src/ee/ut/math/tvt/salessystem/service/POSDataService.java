@@ -3,7 +3,9 @@ package ee.ut.math.tvt.salessystem.service;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
+import ee.ut.math.tvt.salessystem.domain.data.DisplayableItem;
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
@@ -28,5 +30,5 @@ public class POSDataService {
 		List<HistoryItem> result = session.createQuery("from HistoryItem").list();
 		return result;
 	}
-
+	
 }

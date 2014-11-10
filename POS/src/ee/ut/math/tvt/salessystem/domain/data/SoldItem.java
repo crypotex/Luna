@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class SoldItem implements Cloneable, DisplayableItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private long id;
 
 	@ManyToOne
 	@JoinColumn(name = "HISTORYITEM_ID", nullable = false)
@@ -39,14 +39,17 @@ public class SoldItem implements Cloneable, DisplayableItem {
 		this.quantity = quantity;
 
 	}
-
-
+	
+	public SoldItem() {
+		
+	}
+	
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id = getStockItem().getId();
 	}
 
 	public String getName() {
@@ -85,4 +88,21 @@ public class SoldItem implements Cloneable, DisplayableItem {
 		this.stockItem = stockItem;
 	}
 
+	public HistoryItem getHistoryItem() {
+		return historyItem;
+	}
+
+
+	public void setHistoryItem(HistoryItem historyItem) {
+		this.historyItem = historyItem;
+	}
+
+	@Override
+	public String toString() {
+		return "SoldItem [id=" + id + ", historyItem=" + historyItem
+				+ ", stockItem=" + stockItem + ", name=" + name + ", quantity="
+				+ quantity + ", price=" + price + "]";
+	}
+	
+	
 }

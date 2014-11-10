@@ -17,8 +17,9 @@ import javax.persistence.*;
 public class HistoryItem implements Cloneable, DisplayableItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ID")
 	private long id;
-	
+
 	@OneToMany(mappedBy="historyItem")
 	private List<SoldItem> purchaseItemList;
 	
@@ -28,19 +29,15 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@Column(name="SUMMA")
 	private double sum;
 	
-	@Column(name="PAYMENT")
-	private double payment;
-	
-	public HistoryItem(List<SoldItem> soldItems, double sum ,double payment){
+	public HistoryItem(List<SoldItem> soldItems, double sum){
 		Date newDate = new Date();
-		this.id = newDate.getTime();
 		this.purchaseItemList = soldItems;
 		this.date = newDate;
 		this.sum = sum;
-		this.payment = payment;
 	}
+	
 	public HistoryItem(){
-		
+		date = new Date();
 	}
 	@Override
 	public Long getId() {
@@ -54,10 +51,6 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	
 	public double getSum() {
 		return sum;
-	}
-	
-	public double getPayment() {
-		return payment;
 	}
 	
 	public List<SoldItem> getPurchaseItemList() {
@@ -85,5 +78,20 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 		return getName();
 	}
 	
-	
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setPurchaseItemList(List<SoldItem> purchaseItemList) {
+		this.purchaseItemList = purchaseItemList;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void setSum(double sum) {
+		this.sum = sum;
+	}
+
 }

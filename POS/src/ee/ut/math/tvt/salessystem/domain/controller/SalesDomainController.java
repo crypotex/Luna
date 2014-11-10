@@ -45,9 +45,11 @@ public interface SalesDomainController {
      */
     public void submitCurrentPurchase(HistoryItem item)
             throws VerificationFailedException;
-
+    
     public void endSession();
 
 	public List<HistoryItem> loadHistoryState();
+	
+	public void addToWarehouse(StockItem st);
     
 }

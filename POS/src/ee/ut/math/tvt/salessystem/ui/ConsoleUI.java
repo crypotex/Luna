@@ -120,9 +120,9 @@ public class ConsoleUI {
 			    double sum = 0;
 			    for(StockItem stockItem : cart) {
 			        soldItems.add(new SoldItem(stockItem, stockItem.getQuantity()));
-			        sum += stockItem.getPrice();
+			        sum += stockItem.getPrice()*stockItem.getQuantity();
 			    }
-			    HistoryItem it = new HistoryItem(soldItems, sum, sum); // might want to implement payment
+			    HistoryItem it = new HistoryItem(soldItems, sum); // might want to implement payment
 				dc.submitCurrentPurchase(it);
 				cart.clear();
 			} catch (VerificationFailedException e) {

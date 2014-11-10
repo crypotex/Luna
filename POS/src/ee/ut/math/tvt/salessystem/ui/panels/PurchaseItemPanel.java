@@ -259,8 +259,9 @@ public class PurchaseItemPanel extends JPanel implements ComboBoxEditor {
 			}
 			else {
 				//vahendatakse kogust, aga kui ost tyhistatakse, siis pannakse esialgne kogus tagasi
-				model.getCurrentPurchaseTableModel()
-				.addItem(new SoldItem(stockItem, quantity));
+				SoldItem item = new SoldItem(stockItem, quantity);
+				item.setId(stockItem.getId());
+				model.getCurrentPurchaseTableModel().addItem(item);
 				stockItem.setQuantity(stockItem.getQuantity() - quantity);
 			}
 		}

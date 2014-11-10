@@ -60,7 +60,7 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 		try {
 			return rows.get(row);
 		} catch (Exception e) {
-			throw new RuntimeException("HistoryItemsModel Error : getHistoryItemByRowIndex Error: Line 57");
+			throw new RuntimeException("HistoryItemsModel Error : getHistoryItemByRowIndex Error: Line 63");
 		}
 	}
 	
@@ -81,21 +81,4 @@ public class HistoryItemsModel extends SalesSystemTableModel<HistoryItem> {
 		return buffer.toString();
 	}
 	
-	/**
-     * Add new StockItem to table.
-     */
-    public void addHistoryItem(final HistoryItem sale) {
-    	
-    	HibernateUtil.currentSession().beginTransaction();
-        HibernateUtil.currentSession().save(sale);
-        for (SoldItem item : sale.getPurchaseItemList()) {
-        	HibernateUtil.currentSession().save(item);
-        }
-        HibernateUtil.currentSession().flush();
-        HibernateUtil.currentSession().getTransaction().commit();
-
-        rows.add(sale);
-        log.debug("Added purchase " + sale.getId() + " with sum of " + sale.getSum());
-        fireTableDataChanged();
-    }
 }

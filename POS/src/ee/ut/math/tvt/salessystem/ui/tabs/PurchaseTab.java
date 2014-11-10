@@ -226,8 +226,13 @@ public class PurchaseTab {
 								"Error: Ask moar money",
 								"Error Message",JOptionPane.ERROR_MESSAGE);
 					} else { 
-						HistoryItem it = new HistoryItem(model.getCurrentPurchaseTableModel().getTableRows(),
-								paySum,Double.parseDouble(fieldAmountOfChange.getText()));
+						HistoryItem it = new HistoryItem(model.getCurrentPurchaseTableModel().getTableRows(), paySum);
+						try {
+							domainController.submitCurrentPurchase(it);
+						} catch (VerificationFailedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						model.getHistoryItemsModel().acceptedPurchase(it);
 						endSale();
 						model.getCurrentPurchaseTableModel().clear();
