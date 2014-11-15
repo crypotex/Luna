@@ -9,6 +9,10 @@ import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 
 public class Intro extends IntroUI {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final String MODE = "console";
 
 	public static void main(String[] args) throws IOException {

@@ -57,7 +57,7 @@ public class HistoryTab {
      * @return JTable
      */
     private JScrollPane createHistoryTable() {
-    	JTable historyTable = new JTable(model.getHistoryItemsModel());
+    	final JTable historyTable = new JTable(model.getHistoryItemsModel());
     	historyTable.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) { }

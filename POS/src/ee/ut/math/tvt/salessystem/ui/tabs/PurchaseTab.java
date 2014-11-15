@@ -179,17 +179,17 @@ public class PurchaseTab {
 			}
 
 			final double paySum = toPay;
-			JDialog confirmDialog = new JDialog(new JFrame(), "Confirm page!");
+			final JDialog confirmDialog = new JDialog(new JFrame(), "Confirm page!");
 			confirmDialog.setAlwaysOnTop(true);
 			JLabel amountToPayString = new JLabel("Amount to pay: ");
 			JTextField fieldAmountToPay = new JTextField(Double.toString(paySum));
 			fieldAmountToPay.setEditable(false);
 			JLabel amountPaid = new JLabel("Amount of money received: ");
 			JLabel amountOfChange = new JLabel("Amount of change: ");
-			JTextField fieldAmountOfChange = new JTextField("0");
+			final JTextField fieldAmountOfChange = new JTextField("0");
 			fieldAmountOfChange.setEnabled(false);
-			JTextField fieldAmountPaid = new JTextField();
-			JButton acceptPurchaseButton = new JButton("Accept Purchase");
+			final JTextField fieldAmountPaid = new JTextField();
+			final JButton acceptPurchaseButton = new JButton("Accept Purchase");
 			acceptPurchaseButton.setEnabled(false);
 			JButton declinePurchaseButton = new JButton("Decline Purchase");
 			fieldAmountPaid.addActionListener(new ActionListener() {

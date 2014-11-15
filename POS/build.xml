@@ -12,8 +12,10 @@
 		<property name="doc.dir" value="${build.dir}/doc"/>
 	 	<property name="lib.dir" value="${basedir}/lib"/>
 		<property name="test.reports.dir" value="${build.dir}/reports/"/>
-		
-		
+		<property name="test.dir"   value="${basedir}/test"/>
+		<property name="build.test.dir"   value="${build.dir}/test"/>
+		<property name="etc.dir" value="${basedir}/etc"/>
+			
 		<!-- database variables -->
 		<property name="data.dir" value="${basedir}/data"/>
 		<property name="db.file" value="${data.dir}/POSdb"/>
@@ -45,6 +47,20 @@
 		    	<include name="*.jar"/>
 		    </fileset>
 		</path>
+	
+		<path id="test-classpath">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		    <pathelement path="${build.classes.dir}/" />
+			<pathelement path="${build.test.dir}/" />
+		</path>
+	
+		<path id="libs">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</path>
 
 		<!-- Definitions of runnable ant targets.
 	         Run them from the command line by executing "ant [targetname]"  -->
@@ -71,6 +87,21 @@
 
 		</target>
 		
+		<target name="build-tests" depends="build" description="Build the test system">
+			<mkdir dir="${build.test.dir}"/>
+			<javac
+		        srcdir="${test.dir}"
+		        destdir="${build.test.dir}"
+		        debug="true"
+		        debuglevel="lines,vars,source"
+		        encoding="utf-8"
+		        compiler="modern"
+		        classpathref="libs">
+				<classpath>
+					<pathelement path="${build.classes.dir}" />
+				</classpath>
+			</javac>
+			</target>
 		<!-- Create .jar file -->
 	
 		<target name="dist" depends="build" description="Create .jar file">
@@ -186,7 +217,20 @@
 	            <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
 	        </java>
 		</target>
+	   
+	   	<target name="test" depends="build-tests" description="Run the template application">
 
+	   			<junit>
+	   				<classpath refid="test-classpath" />
+
+	   				<formatter type="brief" usefile="false" />
+	   				<batchtest>
+	   					<fileset dir="${build.test.dir}" includes="**/*.class" />
+	   				</batchtest>
+	   			</junit>
+
+
+	   		</target>
 		
 		<!-- Clean up build system results -->
 	

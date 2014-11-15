@@ -117,7 +117,7 @@ public class StockTab {
 
 	//displays new window where you can enter new item details and adds items to stock
 	private void addItemWindow() {
-		JDialog addingWindow = new JDialog(new JFrame(), "Adding a new item to stock");
+		final JDialog addingWindow = new JDialog(new JFrame(), "Adding a new item to stock");
 		GridBagLayout gb2 = new GridBagLayout();
 		GridBagConstraints gc2 = new GridBagConstraints();
 		gc2.ipadx = 10;
@@ -126,10 +126,10 @@ public class StockTab {
 
 
 		//lisame valjad id, nime, koguse ja hinna jaoks
-		JTextField id = new JTextField(5);
-		JTextField quantity = new JTextField("1", 5);
-		JTextField name = new JTextField(5);
-		JTextField price = new JTextField(5);
+		final JTextField id = new JTextField(5);
+		final JTextField quantity = new JTextField("1", 5);
+		final JTextField name = new JTextField(5);
+		final JTextField price = new JTextField(5);
 
 		ArrayList<JTextField> textfields = new ArrayList<>();
 		textfields.addAll(Arrays.asList(id, quantity, name, price));

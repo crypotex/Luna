@@ -39,7 +39,7 @@ public class SalesSystemUI extends JFrame {
 	 * Constructs sales system GUI.
 	 * @param domainController Sales domain controller.
 	 */
-	public SalesSystemUI(SalesDomainController domainController) {
+	public SalesSystemUI(final SalesDomainController domainController) {
 		this.domainController = domainController;
 		this.model = new SalesSystemModel(domainController);
 
