@@ -49,19 +49,21 @@
 		</path>
 	
 		<path id="test-classpath">
+			<pathelement location="${conf.dir}"/>
 			<fileset dir="${lib.dir}">
 				<include name="*.jar"/>
 			</fileset>
-			<pathelement location="${conf.dir}"/>
 		    <pathelement path="${build.classes.dir}/" />
 			<pathelement path="${build.test.dir}/" />
+	 		<fileset dir="${lib.hibernate.dir}">
+		    	<include name="*.jar"/>
+		    </fileset>
 		</path>
 	
 		<path id="libs">
 			<fileset dir="${lib.dir}">
 				<include name="*.jar"/>
 			</fileset>
-			<pathelement location="${conf.dir}"/>
 		</path>
 
 		<!-- Definitions of runnable ant targets.
