@@ -2,7 +2,10 @@ package ee.ut.math.tvt.salessystem.ui.model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.Sale;
 
 /**
@@ -13,6 +16,11 @@ public class PurchaseHistoryTableModel extends SalesSystemTableModel<Sale> {
 
 	private static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
+	private SalesDomainController controller;
+	
+	private List<Sale> sales = new ArrayList<Sale>();
+	
+	
 	public PurchaseHistoryTableModel() {
 		super(new String[] { "Id", "Time", "Sum", "Client" });
 	}
@@ -40,7 +48,7 @@ public class PurchaseHistoryTableModel extends SalesSystemTableModel<Sale> {
 			buffer.append(headers[i] + "\t");
 		buffer.append("\n");
 
-		for (final Sale sale : rows) {
+		for (final Sale sale : getTableRows()) {
 			buffer.append(sale.getId() + "\t");
 			//buffer.append(sale.getClient() != null ? sale.getClient().getFirstName() : "" + "\t");
 			buffer.append(sale.getSum() + "\t");
@@ -48,5 +56,22 @@ public class PurchaseHistoryTableModel extends SalesSystemTableModel<Sale> {
 		}
 
 		return buffer.toString();
+	}
+
+	@Override
+	public List<Sale> getTableRows() {
+		return sales;
+	}
+
+	@Override
+	public void clearRows() {
+		sales = new ArrayList<Sale>();
+		
+	}
+
+	@Override
+	public void refresh() {
+		sales = controller.getAllSales();
+		
 	}
 }

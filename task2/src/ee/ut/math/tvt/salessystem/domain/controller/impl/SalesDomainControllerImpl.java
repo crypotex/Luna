@@ -113,8 +113,9 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         log.info("Current purchase canceled");
     }
 
-    public void startNewPurchase() {
+    public void startNewPurchase(Client client) {
         // XXX - Start new purchase
+    	model.getCurrentPurchaseTableModel().showSale(new Sale(client));
         log.info("New purchase started");
     }
 

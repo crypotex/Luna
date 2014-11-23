@@ -36,7 +36,7 @@ public interface SalesDomainController {
      *
      * @throws VerificationFailedException
      */
-    public void startNewPurchase();
+    public void startNewPurchase(Client client);
 
     /**
      * Rollback business transaction - purchase of goods.

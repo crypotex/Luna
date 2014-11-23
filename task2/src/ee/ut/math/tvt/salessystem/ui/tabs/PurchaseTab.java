@@ -139,7 +139,9 @@ public class PurchaseTab {
     /** Event handler for the <code>new purchase</code> event. */
     protected void newPurchaseButtonClicked() {
         log.info("New sale process started");
-        domainController.startNewPurchase();
+        
+        Client client = model.getSelectedClient();
+        domainController.startNewPurchase(client);
         startNewSale();
     }
 

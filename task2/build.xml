@@ -25,6 +25,7 @@
     <!-- Definitions of classpath variants used for different tasks -->
     
     <path id="compile.classpath">
+    	<pathelement location="${conf.dir}"/>
         <fileset dir="${lib.dir}">
             <include name="*.jar"/>
         </fileset>

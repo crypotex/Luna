@@ -30,10 +30,10 @@ public class SalesSystemModel {
      */
     public SalesSystemModel(SalesDomainController domainController) {
 
-        warehouseTableModel = new StockTableModel();
+        warehouseTableModel = new StockTableModel(domainController);
         currentPurchaseTableModel = new PurchaseInfoTableModel(this);
         purchaseHistoryTableModel = new PurchaseHistoryTableModel();
-        clientTableModel = new ClientTableModel();
+        clientTableModel = new ClientTableModel(domainController);
 
         // Load data from the database
 
