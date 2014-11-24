@@ -20,16 +20,16 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 	private static final Logger log = Logger.getLogger(PurchaseInfoTableModel.class);
 
 	private SalesSystemModel model;
-	
+
 	private Sale activeSale;
 
-    public PurchaseInfoTableModel() {
-        super(new String[] { "Id", "Name", "Price", "Quantity", "Sum"});
-    }
+	public PurchaseInfoTableModel() {
+		super(new String[] { "Id", "Name", "Price", "Quantity", "Sum"});
+	}
 
 	public PurchaseInfoTableModel(SalesSystemModel model) {
-	    this();
-	    this.model = model;
+		this();
+		this.model = model;
 	}
 
 	@Override
@@ -71,101 +71,103 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
 
 	public SoldItem getForStockItem(long stockItemId) {
-	    for (SoldItem item : getTableRows()) {
-	        if (item.getStockItem().getId().equals(stockItemId)) {
-	            return item;
-	        }
-	    }
-	    return null;
+		for (SoldItem item : getTableRows()) {
+			if (item.getStockItem().getId().equals(stockItemId)) {
+				return item;
+			}
+		}
+		return null;
 	}
 
 
-    /**
-     * Add new StockItem to table.
-     */
-    public void addItem(final SoldItem soldItem) throws SalesSystemException {
+	/**
+	 * Add new StockItem to table.
+	 */
+	public void addItem(final SoldItem soldItem) throws SalesSystemException {
 
-        StockItem stockItem = soldItem.getStockItem();
-        long stockItemId = stockItem.getId();
-        SoldItem existingItem = null;
+		StockItem stockItem = soldItem.getStockItem();
+		long stockItemId = stockItem.getId();
+		SoldItem existingItem = getForStockItem(stockItemId);
 
-        if (model.getCurrentPurchaseTableModel().getItemById(stockItemId) != null) {
-        	int totalQuantity = model.getCurrentPurchaseTableModel().getItemById(stockItemId).getQuantity() 
-        			+ soldItem.getQuantity();
-            validateQuantityInStock(stockItem, totalQuantity);
-            existingItem = model.getCurrentPurchaseTableModel().getItemById(stockItemId);
-            existingItem.setQuantity(totalQuantity);
+		if (existingItem != null) {
+			int totalQuantity = existingItem.getQuantity() 
+					+ soldItem.getQuantity();
+			validateQuantityInStock(stockItem, totalQuantity);
+			existingItem.setQuantity(totalQuantity);
 
-            log.debug("Found existing item " + soldItem.getName()
-                    + " increased quantity by " + soldItem.getQuantity());
+			log.debug("Found existing item " + soldItem.getName()
+					+ " increased quantity by " + soldItem.getQuantity());
 
-        } else {
-            validateQuantityInStock(soldItem.getStockItem(), soldItem.getQuantity());
-            getTableRows().add(soldItem);
-            log.debug("Added " + soldItem.getName()
-                    + " quantity of " + soldItem.getQuantity());
-        }
+		} else {
+			validateQuantityInStock(soldItem.getStockItem(), soldItem.getQuantity());
+			getTableRows().add(soldItem);
+			log.debug("Added " + soldItem.getName()
+					+ " quantity of " + soldItem.getQuantity());
+		}
 
-        fireTableDataChanged();
-    }
+		fireTableDataChanged();
+	}
 
-    /**
-     * Returns the total sum that needs to be paid for all the items in the basket.
-     */
-    public double getTotalPrice() {
-        double price = 0.0;
-        for (SoldItem item : getTableRows()) {
-            price += item.getSum();
-        }
-        return price;
-    }
-
+	/**
+	 * Returns the total sum that needs to be paid for all the items in the basket.
+	 */
+	public double getTotalPrice() {
+		double price = 0.0;
+		for (SoldItem item : getTableRows()) {
+			price += item.getSum();
+		}
+		return price;
+	}
 
 
-    private void validateQuantityInStock(StockItem item, int quantity)
-        throws SalesSystemException {
 
-        if (!model.getWarehouseTableModel().hasEnoughInStock(item, quantity)) {
-            log.info(" -- not enough in stock!");
-            throw new SalesSystemException();
-        }
+	private void validateQuantityInStock(StockItem item, int quantity)
+			throws SalesSystemException {
 
-    }
+		if (!model.getWarehouseTableModel().hasEnoughInStock(item, quantity)) {
+			log.info(" -- not enough in stock!");
+			throw new SalesSystemException();
+		}
+
+	}
 
 
-    public static PurchaseInfoTableModel getEmptyTable() {
-        return new PurchaseInfoTableModel();
-    }
+	public static PurchaseInfoTableModel getEmptyTable() {
+		return new PurchaseInfoTableModel();
+	}
 
-    /**
-     * Replace the current contents of the table with the SoldItems of the given Sale.
-     * (Used by the history details table in the HistoryTab).
-     */
-    public void showSale(Sale sale) {
-        this.activeSale = sale;
-        fireTableDataChanged();
-    }
+	/**
+	 * Replace the current contents of the table with the SoldItems of the given Sale.
+	 * (Used by the history details table in the HistoryTab).
+	 */
+	public void showSale(Sale sale) {
+		this.activeSale = sale;
+		fireTableDataChanged();
+	}
 
 	@Override
 	public List<SoldItem> getTableRows() {
-		List<SoldItem> rows = new ArrayList<SoldItem>();
-		if (activeSale.getSoldItems() != null) {
-			rows.addAll(activeSale.getSoldItems());
+		if (activeSale == null) {
+			return null;
 		}
-		return rows;
+		return activeSale.getSoldItems();
 	}
 
 	@Override
 	public void clearRows() {
 		activeSale = new Sale();
-		activeSale.setSoldItems(new HashSet<SoldItem>());
-		
+		activeSale.setSoldItems(new ArrayList<SoldItem>());
+
 	}
 
 	@Override
 	public void refresh() {
 		fireTableDataChanged();
-		
+
+	}
+
+	public Sale getSale() {
+		return activeSale;
 	}
 
 }

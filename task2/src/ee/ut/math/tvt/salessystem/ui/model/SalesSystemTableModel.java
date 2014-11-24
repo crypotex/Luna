@@ -43,6 +43,9 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
     }
 
     public int getRowCount() {
+    	if (getTableRows() == null) {
+    		return 0;
+    	}
         return getTableRows().size();
     }
 

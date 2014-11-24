@@ -9,12 +9,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 
 public class ClientTab {
     
     private SalesSystemModel model;
+    private SalesDomainController domainController;
     
     public ClientTab(SalesSystemModel model) {
         this.model = model;
@@ -65,5 +67,10 @@ public class ClientTab {
         gc.weighty = 1.0;
         return gc;
     }    
+    
+    public void refresh() {
+    	model.getClientTableModel().populateWithData(domainController.getAllClients());
+    	model.getClientTableModel().fireTableDataChanged();
+    }
     
 }
