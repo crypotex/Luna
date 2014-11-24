@@ -59,7 +59,7 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 			log.debug("Added " + stockItem.getName()
 					+ " quantity of " + stockItem.getQuantity());
 		}
-		fireTableDataChanged();
+		refresh();
 	}
 
 	

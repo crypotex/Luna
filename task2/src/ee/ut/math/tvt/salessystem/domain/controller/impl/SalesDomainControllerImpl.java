@@ -72,10 +72,13 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
         // Begin transaction
         Transaction tx = session.beginTransaction();
-
+        
+        // Set sale client to model private currentClient
+        sale.setClient(model.getSelectedClient());
+        
         //sale.setId(null);
         sale.setSellingTime(new Date());
-
+        
         // Reduce quantities of stockItems in warehouse
         for (SoldItem item : sale.getSoldItems()) {
             // Associate with current sale

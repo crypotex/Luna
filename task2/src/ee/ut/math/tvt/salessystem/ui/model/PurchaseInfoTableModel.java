@@ -71,12 +71,19 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
 
 	public SoldItem getForStockItem(long stockItemId) {
-		for (SoldItem item : getTableRows()) {
-			if (item.getStockItem().getId().equals(stockItemId)) {
-				return item;
+		try {
+			for (SoldItem item : getTableRows()) {
+				System.out.println("For-tsükkel");
+				if (item.getStockItem().getId().equals(stockItemId)) {
+					return item;
+				}
 			}
+			return null;
 		}
-		return null;
+		catch(Exception e) {
+			activeSale.setSoldItems(new ArrayList<SoldItem>());
+			return null;
+		}
 	}
 
 
@@ -88,7 +95,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 		StockItem stockItem = soldItem.getStockItem();
 		long stockItemId = stockItem.getId();
 		SoldItem existingItem = getForStockItem(stockItemId);
-
+		
 		if (existingItem != null) {
 			int totalQuantity = existingItem.getQuantity() 
 					+ soldItem.getQuantity();
@@ -105,7 +112,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 					+ " quantity of " + soldItem.getQuantity());
 		}
 
-		fireTableDataChanged();
+		refresh();
 	}
 
 	/**
